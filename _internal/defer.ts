@@ -38,7 +38,8 @@ async function* defaultSubstitution(
   id: string,
   children: AsyncIterable<string>,
 ): AsyncIterable<string> {
-  yield `<script>document.getElementById("${id}").outerHTML = "`;
+  yield `<template id="_${id}">`;
   yield* children;
-  yield `";</script>`;
+  yield `</template>`;
+  yield `<script>document.getElementById("${id}").outerHTML = document.getElementById("_${id}").innerHTML;</script>`;
 }
