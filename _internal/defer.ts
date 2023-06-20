@@ -1,5 +1,5 @@
 import { _deferredPlaceholder, _deferredSubstitution } from "../config.ts";
-import { Children, DeferredNode, Promisable } from "../types.ts";
+import type { Children, DeferredNode, Promisable } from "../types.ts";
 
 class _DeferredNode implements DeferredNode {
   id: string;
