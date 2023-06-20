@@ -14,8 +14,6 @@ export async function* streamFragment(children: Children): AsyncIterable<Node> {
   ) {
     yield escape(children);
   } else if (isPromiseLike(children)) {
-    console.log("PromiseLike", children);
-
     if (_deferredTimeout) {
       const awaited = await Promise.race([
         children,
@@ -31,8 +29,6 @@ export async function* streamFragment(children: Children): AsyncIterable<Node> {
       yield* streamFragment(children);
     }
   } else if (isIterable(children)) {
-    console.log("Iterable", children);
-
     for (const child of children) {
       yield* streamFragment(child);
     }
