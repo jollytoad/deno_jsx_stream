@@ -9,13 +9,19 @@ import type { DeferredNode, Promisable, StreamableNode } from "../types.ts";
 export async function* streamNode(
   node: Promisable<StreamableNode>,
 ): AsyncIterable<string> {
-  const deferrals = new Set<DeferredNode>();
+  const deferrals = new MuxAsyncIterator<AsyncIterable<string>>();
+
+  yield* streamNode_(node);
+
+  for await (const deferredStream of deferrals) {
+    yield* deferredStream;
+  }
 
   async function* streamNode_(
     node: Promisable<StreamableNode>,
   ): AsyncIterable<string> {
     if (isDeferred(node)) {
-      deferrals.add(node);
+      deferrals.add(renderDeferred(node));
       yield renderPlaceholder(node.id);
     } else if (isSafe(node)) {
       yield String(node);
@@ -38,24 +44,10 @@ export async function* streamNode(
     }
   }
 
-  yield* streamNode_(node);
-
-  if (deferrals.size > 0) {
-    const deferralsMux = new MuxAsyncIterator<AsyncIterable<string>>();
-
-    for (const deferred of deferrals) {
-      deferralsMux.add(renderDeferred(deferred));
-    }
-
-    for await (const deferredStream of deferralsMux) {
-      yield* deferredStream;
-    }
+  async function* renderDeferred(
+    deferred: DeferredNode,
+  ): AsyncIterable<AsyncIterable<string>> {
+    const children = await deferred.children;
+    yield renderSubstitution(deferred.id, streamNode_(children));
   }
-}
-
-async function* renderDeferred(
-  deferred: DeferredNode,
-): AsyncIterable<AsyncIterable<string>> {
-  const children = await deferred.children;
-  yield renderSubstitution(deferred.id, streamNode(children));
 }
