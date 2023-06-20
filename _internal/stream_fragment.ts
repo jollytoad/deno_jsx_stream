@@ -26,7 +26,7 @@ export async function* streamFragment(children: Children): AsyncIterable<Node> {
         yield defer(children as Promisable<Children>);
       }
     } else {
-      yield* streamFragment(children);
+      yield* streamFragment(await children);
     }
   } else if (isIterable(children)) {
     for (const child of children) {
