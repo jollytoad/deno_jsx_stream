@@ -6,6 +6,9 @@ import { MuxAsyncIterator } from "https://deno.land/std@0.192.0/async/mux_async_
 import type { Node, Promisable, RenderOptions, SyncNode } from "../types.ts";
 
 type AwaitedNode = SyncNode | AsyncIterable<Node>;
+type NodeIteration = IteratorResult<AwaitedNode> & {
+  iterator: AsyncIterator<Node>;
+};
 
 export async function* streamNode(
   node: Node,
@@ -18,6 +21,8 @@ export async function* streamNode(
   const renderSubstitution = asFunction(options?.deferredSubstitution) ??
     defaultSubstitution;
 
+  // This will accumulate deferred nodes that took longer than the timeout
+  // they will be rendered at the end of the stream
   const deferrals = new MuxAsyncIterator<AsyncIterable<string>>();
 
   yield* streamNode_(node);
@@ -27,23 +32,20 @@ export async function* streamNode(
   }
 
   async function* streamNode_(
-    node: Node | AsyncNext,
+    node: Node | Promisable<NodeIteration>,
   ): AsyncIterable<string> {
     if (isSafe(node)) {
       // convert the safe string to a string
       yield String(node);
     } else if (typeof node === "string") {
       console.warn("%cWARNING: raw string detected:", "color: red", node);
-    } else if (isPromiseLike(node as Promisable<AwaitedNode>)) {
-      const awaited = await timeout(
-        node as Promise<AwaitedNode>,
-        deferredTimeout,
-      );
+    } else if (isPromiseLike<AwaitedNode | NodeIteration>(node)) {
+      const awaited = await timeout(node, deferredTimeout);
 
       if (awaited) {
         yield* streamNode_(awaited);
       } else {
-        yield defer(node as Promise<AwaitedNode>);
+        yield defer(node);
       }
     } else if (isIterable<Node>(node)) {
       for (const child of node) {
@@ -51,22 +53,16 @@ export async function* streamNode(
       }
     } else if (isAsyncIterable<Node>(node)) {
       if (deferredTimeout) {
-        yield* streamNode_(AsyncNext.fromIterable(node));
+        yield* streamNode_(firstNodeIteration(node));
       } else {
         for await (const child of node) {
           yield* streamNode_(child);
         }
       }
-    } else if (node instanceof AsyncNext) {
-      const awaited = await timeout(node.node, deferredTimeout);
-
-      if (awaited) {
-        if (!awaited.done) {
-          yield* streamNode_(awaited.value);
-          yield* streamNode_(node.next());
-        }
-      } else {
-        yield defer(node);
+    } else if (isNodeIteration(node)) {
+      if (!node.done) {
+        yield* streamNode_(node.value);
+        yield* streamNode_(nextNodeIteration(node.iterator));
       }
     }
 
@@ -75,21 +71,7 @@ export async function* streamNode(
     }
   }
 
-  function timeout<T>(
-    value: Promise<T>,
-    deferredTimeout: number | undefined,
-  ): Promise<T | void> {
-    if (deferredTimeout) {
-      return Promise.race([
-        value,
-        delay(deferredTimeout),
-      ]);
-    } else {
-      return value;
-    }
-  }
-
-  function defer(node: Promise<AwaitedNode> | AsyncNext) {
+  function defer(node: Promise<AwaitedNode | NodeIteration>) {
     const id = crypto.randomUUID();
     deferrals.add(renderDeferred(id, node));
     return renderPlaceholder(id);
@@ -97,11 +79,8 @@ export async function* streamNode(
 
   async function* renderDeferred(
     id: string,
-    deferred: Promise<AwaitedNode> | AsyncNext,
+    deferred: Promise<AwaitedNode | NodeIteration>,
   ): AsyncIterable<AsyncIterable<string>> {
-    if (deferred instanceof AsyncNext) {
-      await deferred.node;
-    }
     const node = await deferred;
     yield renderSubstitution(id, streamNode_(node));
   }
@@ -115,24 +94,34 @@ function asFunction<F>(fn: F | undefined): F | undefined {
   return typeof fn === "function" ? fn : undefined;
 }
 
-class AsyncNext {
-  iterator: AsyncIterator<Node>;
-  node: Promise<IteratorResult<Node>>;
+function firstNodeIteration(iterable: AsyncIterable<Node>) {
+  return nextNodeIteration(iterable[Symbol.asyncIterator]());
+}
 
-  constructor(
-    iterator: AsyncIterator<Node>,
-    node: Promise<IteratorResult<Node>>,
-  ) {
-    this.iterator = iterator;
-    this.node = node;
-  }
+async function nextNodeIteration(
+  iterator: AsyncIterator<Node>,
+): Promise<NodeIteration> {
+  const result = await iterator.next() as IteratorResult<AwaitedNode>;
+  return {
+    ...result,
+    iterator,
+  };
+}
 
-  static fromIterable(iterable: AsyncIterable<Node>) {
-    const iterator = iterable[Symbol.asyncIterator]();
-    return new AsyncNext(iterator, iterator.next());
-  }
+function isNodeIteration(node: Node | NodeIteration): node is NodeIteration {
+  return typeof (node as NodeIteration)?.iterator?.next === "function";
+}
 
-  next(): AsyncNext {
-    return new AsyncNext(this.iterator, this.iterator.next());
+function timeout<T>(
+  value: Promise<T>,
+  deferredTimeout: number | undefined,
+): Promise<T | void> {
+  if (deferredTimeout) {
+    return Promise.race([
+      value,
+      delay(deferredTimeout),
+    ]);
+  } else {
+    return value;
   }
 }
