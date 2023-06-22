@@ -1,13 +1,8 @@
-import type {
-  ComponentType,
-  Promisable,
-  Properties,
-  StreamableNode,
-} from "../types.ts";
+import type { ComponentType, Node, Properties } from "../types.ts";
 
 export function streamComponent(
   component: ComponentType,
   props: Properties,
-): Promisable<StreamableNode> {
+): Node {
   return component(props);
 }

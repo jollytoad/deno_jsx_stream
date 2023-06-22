@@ -4,11 +4,11 @@ import { streamElement } from "./_internal/stream_element.ts";
 import { streamFragment } from "./_internal/stream_fragment.ts";
 import { streamUnknown } from "./_internal/stream_unknown.ts";
 import { isValidTag } from "./_internal/util.ts";
-import type { Promisable, StreamableNode } from "./types.ts";
+import type { AsyncNode, Node } from "./types.ts";
 
 // IMPORTANT: This is UNSAFE experimental code, do not use in production.
 
-export function jsx(type: any, props: any): Promisable<StreamableNode> {
+export function jsx(type: any, props: any): Node {
   // console.group(type, props);
 
   try {
@@ -32,7 +32,9 @@ export const Fragment = null;
 
 // deno-lint-ignore no-namespace
 export namespace JSX {
-  export type Element = Promisable<StreamableNode>;
+  export type Element = any;
+
+  export type AsyncElement = AsyncNode;
 
   export interface IntrinsicAttributes {
     key?: any;

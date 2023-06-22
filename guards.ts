@@ -7,7 +7,8 @@ export function isPromiseLike<T>(
 export function isIterable<T>(
   value: unknown | Iterable<T>,
 ): value is Iterable<T> {
-  return typeof (value as Iterable<T>)?.[Symbol.iterator] === "function";
+  return typeof value !== "string" &&
+    typeof (value as Iterable<T>)?.[Symbol.iterator] === "function";
 }
 
 export function isAsyncIterable<T>(
