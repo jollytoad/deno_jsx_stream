@@ -38,7 +38,14 @@ export function* streamElement(
     } else {
       yield safe(`<${tag}${attrStr}>`);
 
-      yield* streamFragment(children as Children);
+      const __html =
+        (awaitedAttrs.dangerouslySetInnerHTML as { __html: string })?.__html;
+
+      if (typeof __html === "string") {
+        yield safe(__html);
+      } else {
+        yield* streamFragment(children as Children);
+      }
 
       yield safe(`</${tag}>`);
     }

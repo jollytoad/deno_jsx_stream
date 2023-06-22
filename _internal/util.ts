@@ -26,7 +26,12 @@ export function isValidTag(tag: TagName): boolean {
   return /^[a-zA-Z][a-zA-Z0-9\-]*$/.test(tag);
 }
 
+const SPECIAL_ATTRS = new Set([
+  "dangerouslySetInnerHTML",
+]);
+
 export function isValidAttr(name: AttrName, value: unknown): boolean {
   return value !== false && value !== undefined && value !== null &&
+    !SPECIAL_ATTRS.has(name) &&
     /^[a-zA-Z][a-zA-Z0-9\-]*$/.test(name);
 }
