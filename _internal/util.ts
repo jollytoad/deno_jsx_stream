@@ -33,5 +33,7 @@ const SPECIAL_ATTRS = new Set([
 export function isValidAttr(name: AttrName, value: unknown): boolean {
   return value !== false && value !== undefined && value !== null &&
     !SPECIAL_ATTRS.has(name) &&
-    /^[a-zA-Z][a-zA-Z0-9\-]*$/.test(name);
+    // deno-lint-ignore no-control-regex
+    /^[^\u0000-\u001F\u007F-\u009F\s"'>/=\uFDD0-\uFDEF\p{NChar}]+$/u
+      .test(name);
 }
