@@ -62,6 +62,12 @@ export async function* streamNode(
       yield* applyTagHooks("beforeStart", node);
       yield String(node);
       yield* applyTagHooks("afterStart", node);
+    } else if (isTag(node, "void")) {
+      stashTokens(node);
+
+      yield* applyTagHooks("beforeStart", node);
+      yield String(node);
+      yield* applyTagHooks("afterEnd", node);
     } else if (isTag(node, "close")) {
       stashTokens(node);
 
