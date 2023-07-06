@@ -1,14 +1,16 @@
-import { isAsyncIterable, isIterable, isPromiseLike } from "../guards.ts";
-import { escape, isSafe } from "./safe_string.ts";
+import {
+  isAsyncIterable,
+  isIterable,
+  isPrimitiveValue,
+  isPromiseLike,
+} from "../guards.ts";
+import { escape, isSafe } from "./token.ts";
 import type { Node } from "../types.ts";
 
 export function* streamFragment(children: Node): Iterable<Node> {
   if (isSafe(children)) {
     yield children;
-  } else if (
-    typeof children === "string" || typeof children === "boolean" ||
-    typeof children === "number"
-  ) {
+  } else if (isPrimitiveValue(children)) {
     yield escape(children);
   } else if (isPromiseLike<Node>(children)) {
     yield children.then(streamFragment);

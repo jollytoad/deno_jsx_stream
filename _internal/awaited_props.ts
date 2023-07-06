@@ -1,6 +1,12 @@
 import { isPromiseLike } from "../guards.ts";
 import type { AwaitedRecord, Properties } from "../types.ts";
 
+/**
+ * If any property value is a Promise, await it (and all other Promise values),
+ * returning a Promise of the properties where all values are resolved.
+ *
+ * Otherwise, just return the properties as they are.
+ */
 export function awaitedProps<P extends Properties>(
   props: P,
 ): P | Promise<AwaitedRecord<P>> {

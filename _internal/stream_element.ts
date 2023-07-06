@@ -1,12 +1,12 @@
 import { awaitedProps } from "./awaited_props.ts";
 import { streamFragment } from "./stream_fragment.ts";
-import { isValidAttr, isVoidElement } from "./util.ts";
+import { isVoidElement } from "./util.ts";
 import type { Children, Node, Properties, TagName } from "../types.ts";
-import { escape, safe } from "./safe_string.ts";
+import { closeTag, openTag, safe, voidTag } from "./token.ts";
 import { isPromiseLike } from "../guards.ts";
 
 export function* streamElement(
-  tag: TagName,
+  tagName: TagName,
   props: Properties,
 ): Iterable<Node> {
   const { children, ...attrs } = props && typeof props === "object"
@@ -16,27 +16,18 @@ export function* streamElement(
   const awaitedAttrs = awaitedProps(attrs);
 
   if (isPromiseLike(awaitedAttrs)) {
+    // We are awaiting some async attrs to be resolved,
+    // so yield a promise of this streamed element.
     yield awaitedAttrs.then((attrs) => {
-      return streamElement(tag, { children, attrs });
+      return streamElement(tagName, { children, attrs });
     });
   } else {
-    let attrStr = "";
-    for (const [name, value] of Object.entries(awaitedAttrs)) {
-      if (isValidAttr(name, value)) {
-        attrStr += ` ${name}`;
-
-        if (value !== true) {
-          attrStr += `="${escape(value)}"`;
-        }
-      }
-    }
-
-    if (isVoidElement(tag)) {
+    if (isVoidElement(tagName)) {
       // Although self-closing tags are ignored in HTML5, they are required in XML/XHTML/SVG,
       // and it does no harm adding them, and makes void elements more obvious when debugging output.
-      yield safe(`<${tag}${attrStr}/>`);
+      yield voidTag(tagName, awaitedAttrs);
     } else {
-      yield safe(`<${tag}${attrStr}>`);
+      yield openTag(tagName, awaitedAttrs);
 
       const __html =
         (awaitedAttrs.dangerouslySetInnerHTML as { __html: string })?.__html;
@@ -47,7 +38,7 @@ export function* streamElement(
         yield* streamFragment(children as Children);
       }
 
-      yield safe(`</${tag}>`);
+      yield closeTag(tagName);
     }
   }
 }

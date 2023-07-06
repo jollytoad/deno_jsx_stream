@@ -1,3 +1,10 @@
+type PrimitiveValue = string | number | boolean | bigint;
+
+export function isPrimitiveValue(value: unknown): value is PrimitiveValue {
+  return typeof value === "string" || typeof value === "number" ||
+    typeof value === "boolean" || typeof value === "bigint";
+}
+
 export function isPromiseLike<T>(
   value: T | PromiseLike<T> | unknown,
 ): value is PromiseLike<T> {

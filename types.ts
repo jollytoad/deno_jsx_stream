@@ -25,6 +25,38 @@ export type SubstitutionRenderer = (
   children: AsyncIterable<string>,
 ) => AsyncIterable<string>;
 
+export type TagKind = "open" | "void" | "close";
+
+export interface Tag {
+  kind: TagKind;
+  tagName: TagName;
+  attributes?: Record<AttrName, unknown>;
+}
+
+export type Token = Tag | string;
+
+export interface Context {
+  scripts: Set<string>;
+  stylesheets: Set<string>;
+}
+
+export interface TagHooks {
+  beforeStart?: (openTag: Tag, context: Context) => Node | void;
+  afterStart?: (openTag: Tag, context: Context) => Node | void;
+  beforeEnd?: (openTag: Tag, context: Context, tokens?: Token[]) => Node | void;
+  afterEnd?: (openTag: Tag, context: Context, tokens?: Token[]) => Node | void;
+
+  /**
+   * Declare that all tokens within an element (including the element tags themselves)
+   * should be collected and passed into the beforeEnd/afterEnd hook.
+   */
+  collectTokens?: boolean;
+}
+
+export type Placement = keyof Omit<TagHooks, "collectTokens">;
+
+export type TagHandlers = Record<TagName, TagHooks>;
+
 export interface RenderOptions {
   /**
    * Enable deferral of slow async components.
@@ -54,4 +86,12 @@ export interface RenderOptions {
    * This allows you to see the actual effect of streaming whilst developing locally.
    */
   streamDelay?: number;
+
+  /**
+   * Allow custom handling of tags.
+   *
+   * Content can be injected before/after a opening or closing tag.
+   * Useful for injecting scripts to support custom elements.
+   */
+  tagHandlers?: TagHandlers;
 }
