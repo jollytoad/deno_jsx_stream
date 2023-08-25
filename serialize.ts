@@ -10,3 +10,16 @@ export function renderBody(
     new TextEncoderStream(),
   );
 }
+
+export async function renderString(
+  node: JSX.Element,
+  options?: Pick<RenderOptions, "tagHandlers">,
+): Promise<string> {
+  let output = "";
+  for await (
+    const chunk of streamNode(node, { ...options, deferredTimeout: false })
+  ) {
+    output += chunk;
+  }
+  return output;
+}
