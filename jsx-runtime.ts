@@ -6,8 +6,6 @@ import { streamUnknown } from "./_internal/stream_unknown.ts";
 import { isValidTag } from "./_internal/util.ts";
 import type { AsyncNode, Node } from "./types.ts";
 
-// IMPORTANT: This is UNSAFE experimental code, do not use in production.
-
 export function jsx(type: any, props: any): Node {
   // console.group(type, props);
 
