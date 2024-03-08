@@ -1,8 +1,23 @@
 {
+  "name": "@http/jsx-stream",
+  "version": "0.1.0",
   "tasks": {
     "check": "deno fmt && deno lint && deno check **/*.ts"
   },
   "compilerOptions": {
     "verbatimModuleSyntax": true
+  },
+  "imports": {
+    "@http/jsx-stream": "jsr:@http/jsx-stream",
+    "@http/fns": "jsr:@http/fns@0.6",
+    "@std/async": "jsr:@std/async@0.219",
+    "@std/html": "jsr:@std/html@0.219"
+  },
+  "exports": {
+    "./serialize_sw": "./serialize_sw.ts",
+    "./types": "./types.ts",
+    "./guards": "./guards.ts",
+    "./jsx-runtime": "./jsx-runtime.ts",
+    "./serialize": "./serialize.ts"
   }
 }

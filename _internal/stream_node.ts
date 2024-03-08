@@ -1,8 +1,8 @@
 import { defaultPlaceholder, defaultSubstitution } from "./defer.ts";
 import { isAsyncIterable, isIterable, isPromiseLike } from "../guards.ts";
 import { isSafe, isTag } from "./token.ts";
-import { delay } from "https://deno.land/std@0.208.0/async/delay.ts";
-import { MuxAsyncIterator } from "https://deno.land/std@0.208.0/async/mux_async_iterator.ts";
+import { delay } from "@std/async/delay";
+import { MuxAsyncIterator } from "@std/async/mux_async_iterator";
 import type {
   Context,
   Node,
