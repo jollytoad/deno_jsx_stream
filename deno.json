@@ -1,6 +1,6 @@
 {
   "name": "@http/jsx-stream",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "tasks": {
     "check": "deno fmt && deno lint && deno check **/*.ts"
   },
@@ -14,6 +14,7 @@
     "@std/html": "jsr:@std/html@0.219"
   },
   "exports": {
+    ".": "./mod.ts",
     "./serialize_sw": "./serialize_sw.ts",
     "./types": "./types.ts",
     "./guards": "./guards.ts",
