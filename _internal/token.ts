@@ -1,4 +1,4 @@
-import { escape as escape_ } from "https://deno.land/std@0.208.0/html/entities.ts";
+import { escape as escape_ } from "@std/html/entities";
 import { isValidAttr } from "./util.ts";
 import type { AttrName, Tag, TagKind, TagName } from "../types.ts";
 

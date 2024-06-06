@@ -1,8 +1,32 @@
 {
+  "name": "@http/jsx-stream",
+  "version": "0.2.0",
   "tasks": {
-    "check": "deno fmt && deno lint && deno check **/*.ts"
+    "example": "deno run --allow-net --watch examples/page.tsx",
+    "check": "deno check **/*.ts",
+    "ok": "deno fmt && deno lint && deno task check && deno publish --dry-run --allow-dirty",
+    "outdated": "deno run --allow-read=. --allow-net=jsr.io,registry.npmjs.org jsr:@check/deps"
   },
   "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@http/jsx-stream",
+    "noUncheckedIndexedAccess": true,
     "verbatimModuleSyntax": true
+  },
+  "imports": {
+    "@http/host-deno-local": "jsr:@http/host-deno-local@^0.14.0",
+    "@http/jsx-stream": "jsr:@http/jsx-stream",
+    "@http/response": "jsr:@http/response@^0.14.0",
+    "@http/route": "jsr:@http/route@^0.14.0",
+    "@std/async": "jsr:@std/async@^0.224.2",
+    "@std/html": "jsr:@std/html@^0.224.2"
+  },
+  "exports": {
+    ".": "./mod.ts",
+    "./serialize-sw": "./serialize_sw.ts",
+    "./types": "./types.ts",
+    "./guards": "./guards.ts",
+    "./jsx-runtime": "./jsx-runtime.ts",
+    "./serialize": "./serialize.ts"
   }
 }

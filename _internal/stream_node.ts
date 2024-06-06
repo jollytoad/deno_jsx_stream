@@ -1,8 +1,7 @@
 import { defaultPlaceholder, defaultSubstitution } from "./defer.ts";
 import { isAsyncIterable, isIterable, isPromiseLike } from "../guards.ts";
 import { isSafe, isTag } from "./token.ts";
-import { delay } from "https://deno.land/std@0.208.0/async/delay.ts";
-import { MuxAsyncIterator } from "https://deno.land/std@0.208.0/async/mux_async_iterator.ts";
+import { MuxAsyncIterator } from "@std/async/mux-async-iterator";
 import type {
   Context,
   Node,
@@ -77,7 +76,7 @@ export async function* streamNode(
           "color: red",
         );
       } else {
-        const [[tag, tokens]] = tagStack;
+        const [[tag, tokens]] = tagStack as [[Tag, Token[]]];
 
         if (tag.tagName !== node.tagName) {
           console.error(
@@ -213,4 +212,8 @@ function timeout<T>(
   } else {
     return value;
   }
+}
+
+function delay(time: number) {
+  return new Promise<void>((resolve) => setTimeout(resolve, time));
 }

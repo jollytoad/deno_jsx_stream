@@ -1,7 +1,18 @@
-# deno_jsx_stream
-
-[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https://deno.land/x/jsx_stream/mod.ts)
-
-NOTE: This is still fairly experimental.
+# JSX Streaming
 
 Provides a server-side only async streaming serializer for JSX.
+
+Documentation is coming soon, until then read about the general concept
+[here](https://jollytoad.deno.dev/blog/jsx_streaming).
+
+## Example
+
+See the [example](./example/pages.tsx) for an idea of how this is used.
+
+You can start the example with:
+
+```sh
+deno task example
+```
+
+Then open the app in a browser and manually change the URL path.

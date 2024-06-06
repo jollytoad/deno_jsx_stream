@@ -2,9 +2,11 @@ name: Deno
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -14,13 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup repo
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Deno
+      - name: Install Deno
         uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
 
       - name: Verify formatting
         run: deno fmt --check
@@ -29,4 +29,7 @@ jobs:
         run: deno lint
 
       - name: Run TypeScript checking
-        run: deno check **/*.ts
+        run: deno task check
+
+      - name: Publish package
+        run: deno publish --dry-run

@@ -59,7 +59,7 @@ export async function* streamNode(
           "color: red",
         );
       } else {
-        const [[tag, tokens]] = tagStack;
+        const [[tag, tokens]] = tagStack as [[Tag, Token[]]];
 
         if (tag.tagName !== node.tagName) {
           console.error(
