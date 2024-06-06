@@ -4,7 +4,7 @@ import type { JSX } from "./jsx-runtime.ts";
 import type { RenderOptions } from "./types.ts";
 
 /**
- * renderBody optimised for use in ServiceWorker
+ * `renderBody` optimised for use in a ServiceWorker
  */
 export function renderBody(
   node: JSX.Element,
@@ -15,6 +15,9 @@ export function renderBody(
   );
 }
 
+/**
+ * `renderString` optimised for use in a ServiceWorker
+ */
 export async function renderString(
   node: JSX.Element,
   options?: Pick<RenderOptions, "tagHandlers">,
