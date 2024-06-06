@@ -1,4 +1,4 @@
-name: Deno
+name: ci
 
 on:
   push:
@@ -31,5 +31,5 @@ jobs:
       - name: Run TypeScript checking
         run: deno task check
 
-      - name: Publish package
+      - name: Publish dry run
         run: deno publish --dry-run
