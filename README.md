@@ -7,7 +7,7 @@ Documentation is coming soon, until then read about the general concept
 
 ## Example
 
-See the [example](./example/page.tsx) for an idea of how this is used.
+See the [example](./examples/page.tsx) for an idea of how this is used.
 
 You can start the example with:
 
