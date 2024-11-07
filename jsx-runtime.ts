@@ -7,20 +7,14 @@ import { isValidTag } from "./_internal/util.ts";
 import type { AsyncNode, Node } from "./types.ts";
 
 export function jsx(type: any, props: any): Node {
-  // console.group(type, props);
-
-  try {
-    if (typeof type === "function") {
-      return streamComponent(type, props);
-    } else if (type === null) {
-      return streamFragment(props.children);
-    } else if (isValidTag(type)) {
-      return streamElement(type, props);
-    } else {
-      return streamUnknown(type);
-    }
-  } finally {
-    // console.groupEnd();
+  if (typeof type === "function") {
+    return streamComponent(type, props);
+  } else if (type === null) {
+    return streamFragment(props.children);
+  } else if (isValidTag(type)) {
+    return streamElement(type, props);
+  } else {
+    return streamUnknown(type);
   }
 }
 

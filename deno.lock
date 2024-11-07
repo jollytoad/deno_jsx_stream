@@ -1,28 +1,25 @@
 {
-  "version": "3",
-  "packages": {
-    "specifiers": {
-      "jsr:@std/async@^1.0.0-rc.3": "jsr:@std/async@1.0.0-rc.3",
-      "jsr:@std/html@^1.0.0-rc.2": "jsr:@std/html@1.0.0-rc.2"
+  "version": "4",
+  "specifiers": {
+    "jsr:@std/async@^1.0.8": "1.0.8",
+    "jsr:@std/html@^1.0.3": "1.0.3"
+  },
+  "jsr": {
+    "@std/async@1.0.8": {
+      "integrity": "c057c5211a0f1d12e7dcd111ab430091301b8d64b4250052a79d277383bc3ba7"
     },
-    "jsr": {
-      "@std/async@1.0.0-rc.3": {
-        "integrity": "f0f1cb8cca0981c1ed0a5cf1b264bc3f0a44129e53a94be1e80cebeb2817633b"
-      },
-      "@std/html@1.0.0-rc.2": {
-        "integrity": "d120b6e4754e6175eb020b31fb6492da117fdcf924a089169f29b78ba5c4d51a"
-      }
+    "@std/html@1.0.3": {
+      "integrity": "7a0ac35e050431fb49d44e61c8b8aac1ebd55937e0dc9ec6409aa4bab39a7988"
     }
   },
-  "remote": {},
   "workspace": {
     "dependencies": [
-      "jsr:@http/host-deno-local@^0.19.0",
-      "jsr:@http/jsx-stream",
-      "jsr:@http/response@^0.19.0",
-      "jsr:@http/route@^0.19.0",
-      "jsr:@std/async@^1.0.0-rc.3",
-      "jsr:@std/html@^1.0.0-rc.2"
+      "jsr:@http/host-deno-local@0.24",
+      "jsr:@http/jsx-stream@*",
+      "jsr:@http/response@0.24",
+      "jsr:@http/route@0.24",
+      "jsr:@std/async@^1.0.8",
+      "jsr:@std/html@^1.0.3"
     ]
   }
 }
