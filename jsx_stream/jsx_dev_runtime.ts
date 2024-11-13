@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
-export * from "./jsx-runtime.ts";
-import { jsx } from "./jsx-runtime.ts";
-import type { Node } from "./types.ts";
+export * from "./jsx_runtime.ts";
+import { jsx } from "./jsx_runtime.ts";
+import type { HtmlNode } from "@http/html-stream/types";
 
 const SRC_ATTR = getEnv("JSX_SRC_ATTR") ?? "jsx-src";
 
@@ -12,7 +12,7 @@ export function jsxDEV(
   _staticChildren?: boolean,
   source?: JsxSrc,
   _self?: any,
-): Node {
+): HtmlNode {
   if (source && SRC_ATTR) {
     const src =
       `${source?.fileName}#${source?.lineNumber}:${source?.columnNumber}`;

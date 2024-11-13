@@ -1,6 +1,6 @@
 import { escape as escape_ } from "@std/html/entities";
 import { isValidAttr } from "./util.ts";
-import type { AttrName, Tag, TagKind, TagName } from "../types.ts";
+import type { AttrName, HtmlToken, Tag, TagKind, TagName } from "./types.ts";
 
 /**
  * A string that is deemed safe for rendering,
@@ -18,6 +18,15 @@ export function safe(value: unknown): string {
 
 export function escape(value: unknown): string {
   return safe(escape_(String(value)));
+}
+
+export function docType(
+  type: string = "html",
+): string {
+  const token = new _Token(`<!DOCTYPE ${type}>`);
+  token.tagName = "!DOCTYPE";
+  token.attributes = { type };
+  return token as string;
 }
 
 export function openTag(
@@ -42,7 +51,7 @@ export function closeTag(tagName: TagName): string {
   return token as string;
 }
 
-export function isSafe(value: unknown): value is string {
+export function isSafe(value: unknown): value is HtmlToken {
   return value instanceof _Token;
 }
 

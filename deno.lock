@@ -1,25 +1,122 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@dprint/formatter@~0.4.1": "0.4.1",
+    "jsr:@http/discovery@0.24": "0.24.0",
+    "jsr:@http/generate@0.24": "0.24.0",
+    "jsr:@http/host-deno-local@0.24": "0.24.0",
+    "jsr:@http/interceptor@0.24": "0.24.0",
+    "jsr:@http/response@0.24": "0.24.0",
+    "jsr:@http/route@0.24": "0.24.0",
+    "jsr:@std/assert@^1.0.8": "1.0.8",
     "jsr:@std/async@^1.0.8": "1.0.8",
-    "jsr:@std/html@^1.0.3": "1.0.3"
+    "jsr:@std/html@^1.0.3": "1.0.3",
+    "jsr:@std/internal@^1.0.5": "1.0.5",
+    "jsr:@std/net@^1.0.4": "1.0.4",
+    "jsr:@std/path@^1.0.6": "1.0.8",
+    "npm:@types/node@*": "22.5.4"
   },
   "jsr": {
+    "@dprint/formatter@0.4.1": {
+      "integrity": "96449ab83aa9f72df98caa5030d3f4a921c5c29d9b0e0d0da83d79e2024a9637"
+    },
+    "@http/discovery@0.24.0": {
+      "integrity": "7023918e1d49306f87fca0474270e55533ce7afaf3d33ab747085ec23e3267b9",
+      "dependencies": [
+        "jsr:@http/route",
+        "jsr:@std/path"
+      ]
+    },
+    "@http/generate@0.24.0": {
+      "integrity": "88171d2d2583aa727efbca6fa1c91b244113aa66756c215cc623899bbaf5cdbe",
+      "dependencies": [
+        "jsr:@dprint/formatter",
+        "jsr:@http/discovery",
+        "jsr:@std/path"
+      ]
+    },
+    "@http/host-deno-local@0.24.0": {
+      "integrity": "99e5eac3d5d57a4f0aafe6ca40bbdba51cfb08c286fdc9f2bda8eda85e16d796",
+      "dependencies": [
+        "jsr:@http/interceptor",
+        "jsr:@http/route",
+        "jsr:@std/net"
+      ]
+    },
+    "@http/interceptor@0.24.0": {
+      "integrity": "9f1fee3b0571321d96e79dded8e01db21113f8805ec5090e060ab1075ef6c0b4"
+    },
+    "@http/response@0.24.0": {
+      "integrity": "8d9e69bb1c9701a4b30f5dfe68c3f0a1fd794cede3d69d0c058ac9422a0b340f"
+    },
+    "@http/route@0.24.0": {
+      "integrity": "de1315544e1197dd73005c330fe4fe3e6bb5af2babad76321bc605d03ebcc80d",
+      "dependencies": [
+        "jsr:@http/response"
+      ]
+    },
+    "@std/assert@1.0.8": {
+      "integrity": "ebe0bd7eb488ee39686f77003992f389a06c3da1bbd8022184804852b2fa641b",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
     "@std/async@1.0.8": {
       "integrity": "c057c5211a0f1d12e7dcd111ab430091301b8d64b4250052a79d277383bc3ba7"
     },
     "@std/html@1.0.3": {
       "integrity": "7a0ac35e050431fb49d44e61c8b8aac1ebd55937e0dc9ec6409aa4bab39a7988"
+    },
+    "@std/internal@1.0.5": {
+      "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
+    },
+    "@std/net@1.0.4": {
+      "integrity": "2f403b455ebbccf83d8a027d29c5a9e3a2452fea39bb2da7f2c04af09c8bc852"
+    },
+    "@std/path@1.0.8": {
+      "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
+    }
+  },
+  "npm": {
+    "@types/node@22.5.4": {
+      "integrity": "sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==",
+      "dependencies": [
+        "undici-types"
+      ]
+    },
+    "undici-types@6.19.8": {
+      "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
     }
   },
   "workspace": {
     "dependencies": [
-      "jsr:@http/host-deno-local@0.24",
-      "jsr:@http/jsx-stream@*",
-      "jsr:@http/response@0.24",
-      "jsr:@http/route@0.24",
-      "jsr:@std/async@^1.0.8",
-      "jsr:@std/html@^1.0.3"
-    ]
+      "jsr:@http/html-stream@0.5.0",
+      "jsr:@http/jsx-stream@0.5.0",
+      "jsr:@http/token-stream@0.5.0"
+    ],
+    "members": {
+      "examples": {
+        "dependencies": [
+          "jsr:@http/discovery@0.24",
+          "jsr:@http/generate@0.24",
+          "jsr:@http/host-deno-local@0.24",
+          "jsr:@http/response@0.24",
+          "jsr:@http/route@0.24",
+          "jsr:@std/async@^1.0.8"
+        ]
+      },
+      "html_stream": {
+        "dependencies": [
+          "jsr:@std/assert@^1.0.8",
+          "jsr:@std/html@^1.0.3"
+        ]
+      },
+      "token_stream": {
+        "dependencies": [
+          "jsr:@std/assert@^1.0.8",
+          "jsr:@std/async@^1.0.8"
+        ]
+      }
+    }
   }
 }

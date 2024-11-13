@@ -1,12 +1,11 @@
 // deno-lint-ignore-file no-explicit-any
-import { streamComponent } from "./_internal/stream_component.ts";
-import { streamElement } from "./_internal/stream_element.ts";
-import { streamFragment } from "./_internal/stream_fragment.ts";
-import { streamUnknown } from "./_internal/stream_unknown.ts";
-import { isValidTag } from "./_internal/util.ts";
-import type { AsyncNode, Node } from "./types.ts";
+import { streamComponent } from "./stream_component.ts";
+import { streamElement } from "./stream_element.ts";
+import { streamFragment } from "./stream_fragment.ts";
+import { streamUnknown } from "./stream_unknown.ts";
+import type { HtmlNode } from "@http/html-stream/types";
 
-export function jsx(type: any, props: any): Node {
+export function jsx(type: any, props: any): HtmlNode {
   if (typeof type === "function") {
     return streamComponent(type, props);
   } else if (type === null) {
@@ -18,6 +17,10 @@ export function jsx(type: any, props: any): Node {
   }
 }
 
+export function isValidTag(tag: string): boolean {
+  return /^[a-zA-Z][a-zA-Z0-9\-]*$/.test(tag);
+}
+
 export const jsxs = jsx;
 export const jsxDEV = jsx;
 export const Fragment = null;
@@ -26,7 +29,7 @@ export const Fragment = null;
 export namespace JSX {
   export type Element = any;
 
-  export type AsyncElement = AsyncNode;
+  export type AsyncElement = any;
 
   export interface IntrinsicAttributes {
     key?: any;

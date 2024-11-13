@@ -1,0 +1,23 @@
+{
+  "name": "@http/html-stream",
+  "version": "0.5.0",
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.8",
+    "@std/html": "jsr:@std/html@^1.0.3"
+  },
+  "exports": {
+    ".": "./mod.ts",
+    "./defer": "./defer/mod.ts",
+    "./defer/placeholder": "./defer/placeholder.ts",
+    "./defer/substitution": "./defer/substitution.ts",
+    "./transform/prepend-doctype": "./transform/prepend_doctype.ts",
+    "./transform/tag-hooks": "./transform/tag_hooks.ts",
+    "./html-deferral-handler": "./html_deferral_handler.ts",
+    "./render-html-body": "./render_html_body.ts",
+    "./render-html-response": "./render_html_response.ts",
+    "./render-html-string": "./render_html_string.ts",
+    "./token": "./token.ts",
+    "./types": "./types.ts",
+    "./util": "./util.ts"
+  }
+}

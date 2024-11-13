@@ -1,22 +1,10 @@
-import { renderBody } from "@http/jsx-stream";
-import { handle } from "@http/route/handle";
-import { byPattern } from "@http/route/by-pattern";
-import { html } from "@http/response/html";
-import { prependDocType } from "@http/response/prepend-doctype";
-import { port } from "@http/host-deno-local/port";
+import { renderHtmlResponse } from "@http/html-stream";
 
-export default Deno.serve(
-  { port: port() },
-  handle([
-    byPattern(["/", "/:path*"], (req, match) => {
-      return html(
-        prependDocType(
-          renderBody(<Page req={req} path={match.pathname.groups.path!} />),
-        ),
-      );
-    }),
-  ]),
-);
+export function GET(req: Request, match: URLPatternResult) {
+  return renderHtmlResponse(
+    <Page req={req} path={match.pathname.groups.path!} />,
+  );
+}
 
 function Page({ req, path }: { req: Request; path: string }) {
   return (
