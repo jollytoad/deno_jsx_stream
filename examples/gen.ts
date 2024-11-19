@@ -10,7 +10,6 @@ export function generateRoutes() {
     pattern: "/",
     fileRootUrl: import.meta.resolve("./routes"),
     moduleOutUrl: import.meta.resolve("./routes.ts"),
-    pathMapper: "@http/discovery/fresh-path-mapper",
     formatModule: dprintFormatModule(),
     verbose: true,
   });

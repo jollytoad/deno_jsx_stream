@@ -1,8 +1,13 @@
 import { renderHtmlResponse } from "@http/html-stream";
+import { tagHooks } from "@http/html-stream/transform/tag-hooks";
+import { prettify } from "@http/html-stream/hooks/prettify";
 
 export function GET(req: Request, match: URLPatternResult) {
   return renderHtmlResponse(
     <Page req={req} path={match.pathname.groups.path!} />,
+    {
+      transformers: [tagHooks(...prettify())],
+    },
   );
 }
 

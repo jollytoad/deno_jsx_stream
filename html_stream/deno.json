@@ -12,6 +12,7 @@
     "./defer/substitution": "./defer/substitution.ts",
     "./transform/prepend-doctype": "./transform/prepend_doctype.ts",
     "./transform/tag-hooks": "./transform/tag_hooks.ts",
+    "./hooks/prettify": "./hooks/prettify.ts",
     "./html-deferral-handler": "./html_deferral_handler.ts",
     "./render-html-body": "./render_html_body.ts",
     "./render-html-response": "./render_html_response.ts",

@@ -3,7 +3,7 @@ import {
   isIterable,
   isNodeIteration,
   isPromiseLike,
-} from "../token_stream/guards.ts";
+} from "@http/token-stream/guards";
 import { closeTag, openTag, safe, voidTag } from "./token.ts";
 import { assertEquals, assertFalse } from "@std/assert";
 

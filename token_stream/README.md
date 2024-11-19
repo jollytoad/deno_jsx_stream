@@ -17,3 +17,7 @@ This structure may be:
 The functions don't care what a token is, so long as it isn't a Promise, an
 Iterable, or an AsyncIterable. A string will be seen as a token (rather than as
 Iterable).
+
+Also see `@http/html-stream` which adds HTML specific tokens and utility
+functions on top, and also `@http/jsx-stream` which uses this to stream from JSX
+templates.
