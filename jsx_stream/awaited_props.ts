@@ -1,5 +1,5 @@
-import { isPromiseLike } from "../guards.ts";
-import type { AwaitedRecord, Properties } from "../types.ts";
+import { isPromiseLike } from "@http/token-stream/guards";
+import type { AwaitedRecord, Properties } from "./types.ts";
 
 /**
  * If any property value is a Promise, await it (and all other Promise values),

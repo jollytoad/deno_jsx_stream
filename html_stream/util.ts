@@ -1,4 +1,4 @@
-import type { AttrName, TagName } from "../types.ts";
+import type { AttrName, TagName } from "./types.ts";
 
 const VOID_ELEMENTS = new Set([
   "area",

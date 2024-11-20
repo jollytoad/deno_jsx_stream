@@ -31,5 +31,8 @@ jobs:
       - name: Run TypeScript checking
         run: deno task check
 
+      - name: Run tests
+        run: deno test
+
       - name: Publish dry run
         run: deno publish --dry-run

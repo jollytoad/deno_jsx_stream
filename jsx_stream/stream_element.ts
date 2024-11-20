@@ -1,14 +1,15 @@
 import { awaitedProps } from "./awaited_props.ts";
 import { streamFragment } from "./stream_fragment.ts";
-import { isVoidElement } from "./util.ts";
-import type { Children, Node, Properties, TagName } from "../types.ts";
-import { closeTag, openTag, safe, voidTag } from "./token.ts";
-import { isPromiseLike } from "../guards.ts";
+import { isVoidElement } from "@http/html-stream/util";
+import type { Children, Properties } from "./types.ts";
+import { closeTag, openTag, safe, voidTag } from "@http/html-stream/token";
+import { isPromiseLike } from "@http/token-stream/guards";
+import type { HtmlNode, TagName } from "@http/html-stream/types";
 
 export function* streamElement(
   tagName: TagName,
   props: Properties,
-): Iterable<Node> {
+): Iterable<HtmlNode> {
   const { children, ...attrs } = props && typeof props === "object"
     ? props
     : {} as Properties;

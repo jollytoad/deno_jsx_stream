@@ -3,23 +3,23 @@ import {
   isIterable,
   isPrimitiveValue,
   isPromiseLike,
-} from "../guards.ts";
-import { escape, isSafe } from "./token.ts";
-import type { Node } from "../types.ts";
+} from "@http/token-stream/guards";
+import { escape, isSafe } from "@http/html-stream/token";
+import type { HtmlNode } from "@http/html-stream/types";
 
-export function* streamFragment(children: Node): Iterable<Node> {
+export function* streamFragment(children: HtmlNode): Iterable<HtmlNode> {
   if (isSafe(children)) {
     yield children;
   } else if (isPrimitiveValue(children)) {
     yield escape(children);
-  } else if (isPromiseLike<Node>(children)) {
+  } else if (isPromiseLike(children)) {
     yield children.then(streamFragment);
-  } else if (isIterable<Node>(children)) {
+  } else if (isIterable(children)) {
     for (const child of children) {
       yield* streamFragment(child);
     }
-  } else if (isAsyncIterable<Node>(children)) {
-    yield (async function* map(iterable: AsyncIterable<Node>) {
+  } else if (isAsyncIterable(children)) {
+    yield (async function* map(iterable) {
       for await (const node of iterable) {
         yield streamFragment(node);
       }

@@ -1,11 +1,9 @@
 {
-  "name": "@http/jsx-stream",
-  "version": "0.4.0",
   "tasks": {
-    "example": "deno run --allow-net --watch examples/page.tsx",
+    "start": "./examples/main.ts",
     "reload": "deno cache --reload **/*.ts jsr:@check/deps",
-    "check": "deno check **/*.ts",
-    "ok": "deno fmt && deno lint && deno task check && deno publish --dry-run --allow-dirty",
+    "check": "deno check **/*.ts **/*.tsx",
+    "ok": "deno fmt && deno lint && deno task check && deno test && deno publish --dry-run --allow-dirty",
     "lock": "rm -f deno.lock && deno task check",
     "outdated": "deno run --allow-read=. --allow-net=jsr.io,registry.npmjs.org jsr:@check/deps"
   },
@@ -16,21 +14,9 @@
     "verbatimModuleSyntax": true
   },
   "imports": {
-    "@http/host-deno-local": "jsr:@http/host-deno-local@^0.24.0",
-    "@http/jsx-stream": "jsr:@http/jsx-stream",
-    "@http/response": "jsr:@http/response@^0.24.0",
-    "@http/route": "jsr:@http/route@^0.24.0",
-    "@std/async": "jsr:@std/async@^1.0.8",
-    "@std/html": "jsr:@std/html@^1.0.3"
-  },
-  "exports": {
-    ".": "./mod.ts",
-    "./serialize-sw": "./serialize_sw.ts",
-    "./types": "./types.ts",
-    "./guards": "./guards.ts",
-    "./jsx-runtime": "./jsx-runtime.ts",
-    "./jsx-dev-runtime": "./jsx-dev-runtime.ts",
-    "./serialize": "./serialize.ts"
+    "@http/jsx-stream": "jsr:@http/jsx-stream@0.5.0",
+    "@http/html-stream": "jsr:@http/html-stream@0.5.0",
+    "@http/token-stream": "jsr:@http/token-stream@0.5.0"
   },
   "publish": {
     "exclude": [
@@ -38,5 +24,11 @@
       ".vscode",
       "deno.lock"
     ]
-  }
+  },
+  "workspace": [
+    "./token_stream",
+    "./html_stream",
+    "./jsx_stream",
+    "./examples"
+  ]
 }

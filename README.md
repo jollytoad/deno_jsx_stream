@@ -1,18 +1,29 @@
-# JSX Streaming
+# Template streaming libraries
 
-Provides a server-side only async streaming serializer for JSX.
+A set of libraries to aid the building of asynchronous streaming template
+engines.
 
-Documentation is coming soon, until then read about the general concept
-[here](https://jollytoad.deno.dev/blog/jsx_streaming).
+## `@http/token-stream`
 
-## Example
+Provides generic utilities and types for the flattening of complex templates
+structures into a stream of tokens. Including strategies for deferral of slow
+asynchronous content.
 
-See the [example](./examples/page.tsx) for an idea of how this is used.
+## `@http/html-stream`
 
-You can start the example with:
+Provides HTML specific tokens and utility functions
+
+## `@http/jsx-stream`
+
+Provide a JSX engine making use of `@http/token-stream` and `@http/html-stream`
+to support (primarily server-side) rendering of async components.
+
+## Examples
+
+A Deno app serving up a bunch of examples.
+
+To run the example app, clone this repo and run:
 
 ```sh
-deno task example
+deno task start
 ```
-
-Then open the app in a browser and manually change the URL path.

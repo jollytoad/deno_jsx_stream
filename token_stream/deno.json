@@ -1,0 +1,21 @@
+{
+  "name": "@http/token-stream",
+  "version": "0.5.0",
+  "exports": {
+    "./transform/as-encoded": "./transform/as_encoded.ts",
+    "./transform/as-strings": "./transform/as_strings.ts",
+    "./transform/safety-filter": "./transform/safety_filter.ts",
+    "./transform/slow-stream": "./transform/slow_stream.ts",
+    "./deferral-handler": "./deferral_handler.ts",
+    "./flatten-tokens": "./flatten_tokens.ts",
+    "./guards": "./guards.ts",
+    "./render-body": "./render_body.ts",
+    "./render-string": "./render_string.ts",
+    "./transform_tokens": "./transform_tokens.ts",
+    "./types": "./types.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.8",
+    "@std/async": "jsr:@std/async@^1.0.8"
+  }
+}
