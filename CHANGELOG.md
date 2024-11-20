@@ -10,8 +10,11 @@ and this project adheres to
 
 ## BREAKING CHANGES
 
-- major refactor into three separate packages: `@http/token-stream`, `@http/html-stream` & `@http/jsx-stream`.
-- `import { renderBody } from "@http/jsx-stream";` is replaced with `import { renderHtmlBody } from "@http/html-stream";` with different options, or alternatively use `renderHtmlResponse` instead.
+- major refactor into three separate packages: `@http/token-stream`,
+  `@http/html-stream` & `@http/jsx-stream`.
+- `import { renderBody } from "@http/jsx-stream";` is replaced with
+  `import { renderHtmlBody } from "@http/html-stream";` with different options,
+  or alternatively use `renderHtmlResponse` instead.
 
 ## [0.4.0]
 

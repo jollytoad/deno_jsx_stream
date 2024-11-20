@@ -2,7 +2,7 @@
   "tasks": {
     "start": "./examples/main.ts",
     "reload": "deno cache --reload **/*.ts jsr:@check/deps",
-    "check": "deno check **/*.ts",
+    "check": "deno check **/*.ts **/*.tsx",
     "ok": "deno fmt && deno lint && deno task check && deno test && deno publish --dry-run --allow-dirty",
     "lock": "rm -f deno.lock && deno task check",
     "outdated": "deno run --allow-read=. --allow-net=jsr.io,registry.npmjs.org jsr:@check/deps"
