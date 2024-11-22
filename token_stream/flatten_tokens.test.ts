@@ -149,7 +149,7 @@ Deno.test("flatten an async iterable of delayed promises with deferral", async (
   }
 });
 
-Deno.test.ignore(
+Deno.test(
   "flatten an iterable of delayed promises with deferral expecting reverse order",
   async () => {
     await assertFlattens(

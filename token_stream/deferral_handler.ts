@@ -1,4 +1,3 @@
-import { MuxAsyncIterator } from "@std/async/mux-async-iterator";
 import type {
   DeferralHandler,
   DeferralOptions,
@@ -13,13 +12,17 @@ import type {
 export function deferralHandler<T>(
   options: DeferralOptions<T>,
 ): DeferralHandler<T> {
-  const deferrals = new MuxAsyncIterator<AsyncIterable<T>>();
+  // Map of deferred content, the Promise resolves when the AsyncIterable emits it's first value
+  const deferrals = new Map<
+    PlaceholderId,
+    Promise<readonly [PlaceholderId, AsyncIterable<T>]>
+  >();
 
-  async function timeout<T>(value: PromiseLike<T>) {
+  async function timeout<T>(pending: PromiseLike<T>) {
     let i;
     try {
       return await Promise.race([
-        value,
+        pending,
         new Promise<void>((resolve) => {
           i = setTimeout(resolve, options.timeout);
         }),
@@ -29,22 +32,40 @@ export function deferralHandler<T>(
     }
   }
 
-  function defer(deferred: AsyncIterable<T>): T {
+  function defer(pending: AsyncIterable<T>): T {
     const id = options.generateId?.() ?? crypto.randomUUID();
-    deferrals.add(wrapDeferred(id, deferred));
+    deferrals.set(id, watch(id, pending));
     return options.placeholder(id);
   }
 
-  async function* wrapDeferred(
-    id: PlaceholderId,
-    deferred: AsyncIterable<T>,
-  ): AsyncIterable<AsyncIterable<T>> {
-    yield options.substitution(id, deferred);
+  async function watch(id: PlaceholderId, pending: AsyncIterable<T>) {
+    const iterator = pending[Symbol.asyncIterator]();
+
+    // wait for the first value from the iterator
+    const { done, value } = await iterator.next();
+
+    return [
+      id,
+      (async function* (done, value) {
+        if (!done) {
+          // yield the first value we just awaited
+          yield value;
+          // wrap the remaining iterator in an iterable and yield all value
+          yield* { [Symbol.asyncIterator]: () => iterator };
+        }
+      })(done, value) as AsyncIterable<T>,
+    ] as const;
   }
 
   async function* iterate() {
-    for await (const deferredStream of deferrals) {
-      yield* deferredStream;
+    while (deferrals.size) {
+      const [id, deferred] = await Promise.race(deferrals.values());
+      deferrals.delete(id);
+
+      if (deferred) {
+        // apply the substitution template to the deferred tokens
+        yield* options.substitution(id, deferred);
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@http/token-stream",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "exports": {
     "./transform/as-encoded": "./transform/as_encoded.ts",
     "./transform/as-strings": "./transform/as_strings.ts",

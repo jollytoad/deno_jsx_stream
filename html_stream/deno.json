@@ -1,6 +1,6 @@
 {
   "name": "@http/html-stream",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.8",
     "@std/html": "jsr:@std/html@^1.0.3"
