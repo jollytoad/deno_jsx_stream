@@ -1,9 +1,10 @@
 {
   "name": "@http/token-stream",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "exports": {
     "./transform/as-encoded": "./transform/as_encoded.ts",
     "./transform/as-strings": "./transform/as_strings.ts",
+    "./transform/catch-errors": "./transform/catch_errors.ts",
     "./transform/safety-filter": "./transform/safety_filter.ts",
     "./transform/slow-stream": "./transform/slow_stream.ts",
     "./deferral-handler": "./deferral_handler.ts",

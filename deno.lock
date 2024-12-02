@@ -78,9 +78,9 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@http/html-stream@0.6.0",
-      "jsr:@http/jsx-stream@0.6.0",
-      "jsr:@http/token-stream@0.6.0"
+      "jsr:@http/html-stream@0.7.0",
+      "jsr:@http/jsx-stream@0.7.0",
+      "jsr:@http/token-stream@0.7.0"
     ],
     "members": {
       "examples": {

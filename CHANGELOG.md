@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0]
+
+### Added
+
+- [@http/token-stream] added `catchErrors` transform to catch and report/handle
+  errors within a token stream.
+
+### Changed
+
+- [@http/html-stream] add `catchErrors` to the standard transformers used by
+  `renderHtmlBody` to ensure errors are not silently discarded.
+
 ## [0.6.0]
 
 ### Changed
