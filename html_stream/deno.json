@@ -1,8 +1,8 @@
 {
   "name": "@http/html-stream",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.8",
+    "@std/assert": "jsr:@std/assert@^1.0.10",
     "@std/html": "jsr:@std/html@^1.0.3"
   },
   "exports": {
@@ -17,6 +17,7 @@
     "./render-html-body": "./render_html_body.ts",
     "./render-html-response": "./render_html_response.ts",
     "./render-html-string": "./render_html_string.ts",
+    "./response-node-cache": "./response_node_cache.ts",
     "./token": "./token.ts",
     "./types": "./types.ts",
     "./util": "./util.ts"

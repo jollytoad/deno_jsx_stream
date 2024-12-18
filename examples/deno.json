@@ -5,6 +5,6 @@
     "@http/host-deno-local": "jsr:@http/host-deno-local@^0.24.0",
     "@http/response": "jsr:@http/response@^0.24.0",
     "@http/route": "jsr:@http/route@^0.24.0",
-    "@std/async": "jsr:@std/async@^1.0.8"
+    "@std/async": "jsr:@std/async@^1.0.9"
   }
 }

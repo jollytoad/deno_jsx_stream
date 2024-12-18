@@ -1,6 +1,6 @@
 {
   "name": "@http/token-stream",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "exports": {
     "./transform/as-encoded": "./transform/as_encoded.ts",
     "./transform/as-strings": "./transform/as_strings.ts",
@@ -16,7 +16,7 @@
     "./types": "./types.ts"
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.8",
-    "@std/async": "jsr:@std/async@^1.0.8"
+    "@std/assert": "jsr:@std/assert@^1.0.10",
+    "@std/async": "jsr:@std/async@^1.0.9"
   }
 }

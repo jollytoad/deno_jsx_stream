@@ -1,6 +1,6 @@
 {
   "name": "@http/jsx-stream",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "exports": {
     "./jsx-runtime": "./jsx_runtime.ts",
     "./jsx-dev-runtime": "./jsx_dev_runtime.ts",
