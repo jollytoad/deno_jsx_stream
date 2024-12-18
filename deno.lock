@@ -8,8 +8,8 @@
     "jsr:@http/interceptor@0.24": "0.24.0",
     "jsr:@http/response@0.24": "0.24.0",
     "jsr:@http/route@0.24": "0.24.0",
-    "jsr:@std/assert@^1.0.8": "1.0.8",
-    "jsr:@std/async@^1.0.8": "1.0.9",
+    "jsr:@std/assert@^1.0.10": "1.0.10",
+    "jsr:@std/async@^1.0.9": "1.0.9",
     "jsr:@std/html@^1.0.3": "1.0.3",
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "jsr:@std/net@^1.0.4": "1.0.4",
@@ -54,8 +54,8 @@
         "jsr:@http/response"
       ]
     },
-    "@std/assert@1.0.8": {
-      "integrity": "ebe0bd7eb488ee39686f77003992f389a06c3da1bbd8022184804852b2fa641b",
+    "@std/assert@1.0.10": {
+      "integrity": "59b5cbac5bd55459a19045d95cc7c2ff787b4f8527c0dd195078ff6f9481fbb3",
       "dependencies": [
         "jsr:@std/internal"
       ]
@@ -78,9 +78,9 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@http/html-stream@0.7.0",
-      "jsr:@http/jsx-stream@0.7.0",
-      "jsr:@http/token-stream@0.7.0"
+      "jsr:@http/html-stream@0.8.0",
+      "jsr:@http/jsx-stream@0.8.0",
+      "jsr:@http/token-stream@0.8.0"
     ],
     "members": {
       "examples": {
@@ -90,19 +90,19 @@
           "jsr:@http/host-deno-local@0.24",
           "jsr:@http/response@0.24",
           "jsr:@http/route@0.24",
-          "jsr:@std/async@^1.0.8"
+          "jsr:@std/async@^1.0.9"
         ]
       },
       "html_stream": {
         "dependencies": [
-          "jsr:@std/assert@^1.0.8",
+          "jsr:@std/assert@^1.0.10",
           "jsr:@std/html@^1.0.3"
         ]
       },
       "token_stream": {
         "dependencies": [
-          "jsr:@std/assert@^1.0.8",
-          "jsr:@std/async@^1.0.8"
+          "jsr:@std/assert@^1.0.10",
+          "jsr:@std/async@^1.0.9"
         ]
       }
     }

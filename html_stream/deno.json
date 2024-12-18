@@ -2,7 +2,7 @@
   "name": "@http/html-stream",
   "version": "0.8.0",
   "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.8",
+    "@std/assert": "jsr:@std/assert@^1.0.10",
     "@std/html": "jsr:@std/html@^1.0.3"
   },
   "exports": {
