@@ -1,4 +1,4 @@
-import type { HtmlNode } from "@http/html-stream/types";
+import type { HtmlNode } from "./types.ts";
 
 const cache = new WeakMap<Response, HtmlNode>();
 
