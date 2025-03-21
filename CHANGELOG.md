@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.1]
+
+- [@http/jsx-stream] fix Fragment type to work-around error appearing since Deno
+  2.2.0:
+  `JSX element type '<>' does not have any construct or call signatures. deno-ts(2604)`
+
 ## [0.8.0]
 
 ### Changed

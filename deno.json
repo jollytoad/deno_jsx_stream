@@ -14,7 +14,7 @@
     "verbatimModuleSyntax": true
   },
   "imports": {
-    "@http/jsx-stream": "jsr:@http/jsx-stream@0.8.0",
+    "@http/jsx-stream": "jsr:@http/jsx-stream@0.8.1",
     "@http/html-stream": "jsr:@http/html-stream@0.8.0",
     "@http/token-stream": "jsr:@http/token-stream@0.8.0"
   },

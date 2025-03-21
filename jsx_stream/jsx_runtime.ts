@@ -23,7 +23,7 @@ export function isValidTag(tag: string): boolean {
 
 export const jsxs = jsx;
 export const jsxDEV = jsx;
-export const Fragment = null;
+export const Fragment = null as any;
 
 // deno-lint-ignore no-namespace
 export namespace JSX {

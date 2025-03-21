@@ -1,10 +1,10 @@
 {
   "imports": {
-    "@http/discovery": "jsr:@http/discovery@^0.24.0",
-    "@http/generate": "jsr:@http/generate@^0.24.0",
-    "@http/host-deno-local": "jsr:@http/host-deno-local@^0.24.0",
-    "@http/response": "jsr:@http/response@^0.24.0",
-    "@http/route": "jsr:@http/route@^0.24.0",
+    "@http/discovery": "jsr:@http/discovery@^0.26.0",
+    "@http/generate": "jsr:@http/generate@^0.26.1",
+    "@http/host-deno-local": "jsr:@http/host-deno-local@^0.26.0",
+    "@http/response": "jsr:@http/response@^0.26.0",
+    "@http/route": "jsr:@http/route@^0.26.0",
     "@std/async": "jsr:@std/async@^1.0.9"
   }
 }

@@ -2,66 +2,66 @@
   "version": "4",
   "specifiers": {
     "jsr:@dprint/formatter@~0.4.1": "0.4.1",
-    "jsr:@http/discovery@0.24": "0.24.0",
-    "jsr:@http/generate@0.24": "0.24.0",
-    "jsr:@http/host-deno-local@0.24": "0.24.0",
-    "jsr:@http/interceptor@0.24": "0.24.0",
-    "jsr:@http/response@0.24": "0.24.0",
-    "jsr:@http/route@0.24": "0.24.0",
-    "jsr:@std/assert@^1.0.10": "1.0.10",
-    "jsr:@std/async@^1.0.9": "1.0.9",
+    "jsr:@http/discovery@0.26": "0.26.0",
+    "jsr:@http/generate@~0.26.1": "0.26.1",
+    "jsr:@http/host-deno-local@0.26": "0.26.0",
+    "jsr:@http/interceptor@0.26": "0.26.0",
+    "jsr:@http/response@0.26": "0.26.0",
+    "jsr:@http/route@0.26": "0.26.0",
+    "jsr:@std/assert@^1.0.10": "1.0.11",
+    "jsr:@std/async@^1.0.9": "1.0.11",
     "jsr:@std/html@^1.0.3": "1.0.3",
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "jsr:@std/net@^1.0.4": "1.0.4",
-    "jsr:@std/path@^1.0.6": "1.0.8"
+    "jsr:@std/path@^1.0.8": "1.0.8"
   },
   "jsr": {
     "@dprint/formatter@0.4.1": {
       "integrity": "96449ab83aa9f72df98caa5030d3f4a921c5c29d9b0e0d0da83d79e2024a9637"
     },
-    "@http/discovery@0.24.0": {
-      "integrity": "7023918e1d49306f87fca0474270e55533ce7afaf3d33ab747085ec23e3267b9",
+    "@http/discovery@0.26.0": {
+      "integrity": "98096ad0c43d7dff5a5bf851e3afd107b1aafcd0a959c9036ceb0ffcbc5d98b0",
       "dependencies": [
         "jsr:@http/route",
         "jsr:@std/path"
       ]
     },
-    "@http/generate@0.24.0": {
-      "integrity": "88171d2d2583aa727efbca6fa1c91b244113aa66756c215cc623899bbaf5cdbe",
+    "@http/generate@0.26.1": {
+      "integrity": "ed4433fe4985004105f4f454befbac12fa7c47af909f8470d0e059579948a348",
       "dependencies": [
         "jsr:@dprint/formatter",
         "jsr:@http/discovery",
         "jsr:@std/path"
       ]
     },
-    "@http/host-deno-local@0.24.0": {
-      "integrity": "99e5eac3d5d57a4f0aafe6ca40bbdba51cfb08c286fdc9f2bda8eda85e16d796",
+    "@http/host-deno-local@0.26.0": {
+      "integrity": "83c47b936d0c69adb6c340ccf50aee04f4aba6ba56a7fc7feae461d63a5675c7",
       "dependencies": [
         "jsr:@http/interceptor",
         "jsr:@http/route",
         "jsr:@std/net"
       ]
     },
-    "@http/interceptor@0.24.0": {
-      "integrity": "9f1fee3b0571321d96e79dded8e01db21113f8805ec5090e060ab1075ef6c0b4"
+    "@http/interceptor@0.26.0": {
+      "integrity": "b630951e90592c6d88fb3c0263400816988d2a2faf8538d4130ba25a949d4a2f"
     },
-    "@http/response@0.24.0": {
-      "integrity": "8d9e69bb1c9701a4b30f5dfe68c3f0a1fd794cede3d69d0c058ac9422a0b340f"
+    "@http/response@0.26.0": {
+      "integrity": "c6cc23a1678584dfc1a1bd9f78dd294e59a18a65976f8529e7e93b21f9ce2820"
     },
-    "@http/route@0.24.0": {
-      "integrity": "de1315544e1197dd73005c330fe4fe3e6bb5af2babad76321bc605d03ebcc80d",
+    "@http/route@0.26.0": {
+      "integrity": "6158fa245ca89ab2bc145efb43846e7eb3c903f4f0e0f4dbec91a1079e2aa1eb",
       "dependencies": [
         "jsr:@http/response"
       ]
     },
-    "@std/assert@1.0.10": {
-      "integrity": "59b5cbac5bd55459a19045d95cc7c2ff787b4f8527c0dd195078ff6f9481fbb3",
+    "@std/assert@1.0.11": {
+      "integrity": "2461ef3c368fe88bc60e186e7744a93112f16fd110022e113a0849e94d1c83c1",
       "dependencies": [
         "jsr:@std/internal"
       ]
     },
-    "@std/async@1.0.9": {
-      "integrity": "c6472fd0623b3f3daae023cdf7ca5535e1b721dfbf376562c0c12b3fb4867f91"
+    "@std/async@1.0.11": {
+      "integrity": "eee0d3405275506638a9c8efaa849cf0d35873120c69b7caa1309c9a9e5b6f85"
     },
     "@std/html@1.0.3": {
       "integrity": "7a0ac35e050431fb49d44e61c8b8aac1ebd55937e0dc9ec6409aa4bab39a7988"
@@ -79,17 +79,17 @@
   "workspace": {
     "dependencies": [
       "jsr:@http/html-stream@0.8.0",
-      "jsr:@http/jsx-stream@0.8.0",
+      "jsr:@http/jsx-stream@0.8.1",
       "jsr:@http/token-stream@0.8.0"
     ],
     "members": {
       "examples": {
         "dependencies": [
-          "jsr:@http/discovery@0.24",
-          "jsr:@http/generate@0.24",
-          "jsr:@http/host-deno-local@0.24",
-          "jsr:@http/response@0.24",
-          "jsr:@http/route@0.24",
+          "jsr:@http/discovery@0.26",
+          "jsr:@http/generate@~0.26.1",
+          "jsr:@http/host-deno-local@0.26",
+          "jsr:@http/response@0.26",
+          "jsr:@http/route@0.26",
           "jsr:@std/async@^1.0.9"
         ]
       },
