@@ -10,10 +10,17 @@ class _Token extends String implements Partial<Tag> {
   kind?: TagKind;
   tagName?: TagName;
   attributes?: Record<AttrName, unknown>;
+  partialHtml?: true;
 }
 
 export function safe(value: unknown): string {
   return new _Token(value) as string;
+}
+
+export function partialHtml(value: string): string {
+  const token = new _Token(value);
+  token.partialHtml = true;
+  return token as string;
 }
 
 export function escape(value: unknown): string {
@@ -53,6 +60,10 @@ export function closeTag(tagName: TagName): string {
 
 export function isSafe(value: unknown): value is HtmlToken {
   return value instanceof _Token;
+}
+
+export function isPartialHtml(value: unknown): value is HtmlToken {
+  return value instanceof _Token && value.partialHtml === true;
 }
 
 export function isTag(value: unknown, kind?: TagKind): value is Tag {

@@ -1,12 +1,12 @@
 export type SyncNode<T> = null | T | Iterable<Node<T>>;
-export type AsyncNode<T> = Promise<Node<T>> | AsyncIterable<Node<T>>;
+export type AsyncNode<T> = PromiseLike<Node<T>> | AsyncIterable<Node<T>>;
 export type AwaitedNode<T> = SyncNode<T> | AsyncIterable<Node<T>>;
 export type NodeIteration<T> = IteratorResult<AwaitedNode<T>> & {
   iterator: AsyncIterator<Node<T>>;
 };
 export type Node<T> = SyncNode<T> | AsyncNode<T>;
 
-export type Awaitable<T> = T | Promise<T>;
+export type Awaitable<T> = T | PromiseLike<T>;
 
 export type PlaceholderId = string;
 export type PlaceholderRenderer<T> = (id: PlaceholderId) => T;

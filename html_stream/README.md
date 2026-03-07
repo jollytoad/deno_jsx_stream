@@ -12,5 +12,7 @@ Includes:
 - tag hooks transformer to allow additional content to be injected before/after
   tags, this is useful to inject scripts or styles for custom elements.
 - hook to prettify the HTML.
+- `streamFragment` to expand an `unknown` value to an `Iterable<HtmlNode>`
+- `html` tagged template literal.
 
 This is used by the `@http/jsx-stream` package.

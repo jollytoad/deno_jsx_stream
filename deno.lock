@@ -1,8 +1,9 @@
 {
-  "version": "4",
+  "version": "5",
   "specifiers": {
     "jsr:@dprint/formatter@~0.4.1": "0.4.1",
     "jsr:@http/discovery@0.26": "0.26.0",
+    "jsr:@http/fs@0.26": "0.26.0",
     "jsr:@http/generate@~0.26.1": "0.26.1",
     "jsr:@http/host-deno-local@0.26": "0.26.0",
     "jsr:@http/interceptor@0.26": "0.26.0",
@@ -10,10 +11,15 @@
     "jsr:@http/route@0.26": "0.26.0",
     "jsr:@std/assert@^1.0.10": "1.0.11",
     "jsr:@std/async@^1.0.9": "1.0.11",
-    "jsr:@std/html@^1.0.3": "1.0.3",
+    "jsr:@std/collections@^1.0.10": "1.1.6",
+    "jsr:@std/encoding@^1.0.10": "1.0.10",
+    "jsr:@std/html@^1.0.3": "1.0.5",
+    "jsr:@std/http@^1.0.13": "1.0.25",
     "jsr:@std/internal@^1.0.5": "1.0.5",
+    "jsr:@std/media-types@^1.1.0": "1.1.0",
     "jsr:@std/net@^1.0.4": "1.0.4",
-    "jsr:@std/path@^1.0.8": "1.0.8"
+    "jsr:@std/path@^1.0.8": "1.0.8",
+    "jsr:@std/streams@^1.0.9": "1.0.17"
   },
   "jsr": {
     "@dprint/formatter@0.4.1": {
@@ -26,11 +32,22 @@
         "jsr:@std/path"
       ]
     },
+    "@http/fs@0.26.0": {
+      "integrity": "064309d1741dabb7c8e4d351a1b409a7e4a9c91bfe06be8a310d94c677a55413",
+      "dependencies": [
+        "jsr:@http/response",
+        "jsr:@std/http",
+        "jsr:@std/media-types",
+        "jsr:@std/path",
+        "jsr:@std/streams"
+      ]
+    },
     "@http/generate@0.26.1": {
       "integrity": "ed4433fe4985004105f4f454befbac12fa7c47af909f8470d0e059579948a348",
       "dependencies": [
         "jsr:@dprint/formatter",
         "jsr:@http/discovery",
+        "jsr:@http/route",
         "jsr:@std/path"
       ]
     },
@@ -46,12 +63,20 @@
       "integrity": "b630951e90592c6d88fb3c0263400816988d2a2faf8538d4130ba25a949d4a2f"
     },
     "@http/response@0.26.0": {
-      "integrity": "c6cc23a1678584dfc1a1bd9f78dd294e59a18a65976f8529e7e93b21f9ce2820"
+      "integrity": "c6cc23a1678584dfc1a1bd9f78dd294e59a18a65976f8529e7e93b21f9ce2820",
+      "dependencies": [
+        "jsr:@std/http"
+      ]
     },
     "@http/route@0.26.0": {
       "integrity": "6158fa245ca89ab2bc145efb43846e7eb3c903f4f0e0f4dbec91a1079e2aa1eb",
       "dependencies": [
-        "jsr:@http/response"
+        "jsr:@http/fs",
+        "jsr:@http/response",
+        "jsr:@std/collections",
+        "jsr:@std/http",
+        "jsr:@std/media-types",
+        "jsr:@std/path"
       ]
     },
     "@std/assert@1.0.11": {
@@ -63,24 +88,42 @@
     "@std/async@1.0.11": {
       "integrity": "eee0d3405275506638a9c8efaa849cf0d35873120c69b7caa1309c9a9e5b6f85"
     },
-    "@std/html@1.0.3": {
-      "integrity": "7a0ac35e050431fb49d44e61c8b8aac1ebd55937e0dc9ec6409aa4bab39a7988"
+    "@std/collections@1.1.6": {
+      "integrity": "b458160ce65ea5ad35da05d0a5cbee4b583677c8b443a10d7beb0c4ac63f2baa"
+    },
+    "@std/encoding@1.0.10": {
+      "integrity": "8783c6384a2d13abd5e9e87a7ae0520a30e9f56aeeaa3bdf910a3eaaf5c811a1"
+    },
+    "@std/html@1.0.5": {
+      "integrity": "4e2d693f474cae8c16a920fa5e15a3b72267b94b84667f11a50c6dd1cb18d35e"
+    },
+    "@std/http@1.0.25": {
+      "integrity": "577b4252290af1097132812b339fffdd55fb0f4aeb98ff11bdbf67998aa17193",
+      "dependencies": [
+        "jsr:@std/encoding"
+      ]
     },
     "@std/internal@1.0.5": {
       "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
+    },
+    "@std/media-types@1.1.0": {
+      "integrity": "c9d093f0c05c3512932b330e3cc1fe1d627b301db33a4c2c2185c02471d6eaa4"
     },
     "@std/net@1.0.4": {
       "integrity": "2f403b455ebbccf83d8a027d29c5a9e3a2452fea39bb2da7f2c04af09c8bc852"
     },
     "@std/path@1.0.8": {
       "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
+    },
+    "@std/streams@1.0.17": {
+      "integrity": "7859f3d9deed83cf4b41f19223d4a67661b3d3819e9fc117698f493bf5992140"
     }
   },
   "workspace": {
     "dependencies": [
-      "jsr:@http/html-stream@0.8.0",
-      "jsr:@http/jsx-stream@0.8.1",
-      "jsr:@http/token-stream@0.8.0"
+      "jsr:@http/html-stream@0.9.0",
+      "jsr:@http/jsx-stream@0.9.0",
+      "jsr:@http/token-stream@0.9.0"
     ],
     "members": {
       "examples": {

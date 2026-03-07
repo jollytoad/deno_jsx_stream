@@ -8,15 +8,15 @@
     "outdated": "deno run --allow-read=. --allow-net=jsr.io,registry.npmjs.org jsr:@check/deps"
   },
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "precompile",
     "jsxImportSource": "@http/jsx-stream",
     "noUncheckedIndexedAccess": true,
     "verbatimModuleSyntax": true
   },
   "imports": {
-    "@http/jsx-stream": "jsr:@http/jsx-stream@0.8.1",
-    "@http/html-stream": "jsr:@http/html-stream@0.8.0",
-    "@http/token-stream": "jsr:@http/token-stream@0.8.0"
+    "@http/jsx-stream": "jsr:@http/jsx-stream@0.9.0",
+    "@http/html-stream": "jsr:@http/html-stream@0.9.0",
+    "@http/token-stream": "jsr:@http/token-stream@0.9.0"
   },
   "publish": {
     "exclude": [

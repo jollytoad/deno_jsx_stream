@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0]
+
+### Changed
+
+- Moved `streamFragment` from `@http/jsx-stream` to `@http/html-stream` and
+  export
+
+### Added
+
+- [@http/html-stream] support for a `partialHtml` token
+- [@http/html-stream] add `html` tagged template literal function (uses
+  `partialHtml` tokens)
+- [@http/jsx-stream] support for `jsx: "precompile"` (uses `partialHtml` tokens)
+
+### BREAKING CHANGES
+
+- Usage of `partialHtml` tokens may break tag hooks (eg. prettify), would need
+  to create a parsing transformer to expand these tokens to tag tokens
+
 ## [0.8.1]
 
 - [@http/jsx-stream] fix Fragment type to work-around error appearing since Deno
@@ -48,7 +67,7 @@ and this project adheres to
 
 ## [0.5.0]
 
-## BREAKING CHANGES
+### BREAKING CHANGES
 
 - major refactor into three separate packages: `@http/token-stream`,
   `@http/html-stream` & `@http/jsx-stream`.

@@ -1,5 +1,5 @@
 import { awaitedProps } from "./awaited_props.ts";
-import { streamFragment } from "./stream_fragment.ts";
+import { streamFragment } from "@http/html-stream/stream-fragment";
 import { isVoidElement } from "@http/html-stream/util";
 import type { Children, Properties } from "./types.ts";
 import { closeTag, openTag, safe, voidTag } from "@http/html-stream/token";

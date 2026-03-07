@@ -7,6 +7,14 @@ import { lazy } from "@http/route/lazy";
 
 export default cascade(
   byPattern(
+    "/template",
+    lazy(async () => byMethod(await import("./routes/template.ts"))),
+  ),
+  byPattern(
+    "/mixed",
+    lazy(async () => byMethod(await import("./routes/mixed.tsx"))),
+  ),
+  byPattern(
     "/deferred",
     lazy(async () => byMethod(await import("./routes/deferred.tsx"))),
   ),
