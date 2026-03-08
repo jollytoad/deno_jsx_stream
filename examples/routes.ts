@@ -15,6 +15,10 @@ export default cascade(
     lazy(async () => byMethod(await import("./routes/mixed.tsx"))),
   ),
   byPattern(
+    "/jsx",
+    lazy(async () => byMethod(await import("./routes/jsx.tsx"))),
+  ),
+  byPattern(
     "/deferred",
     lazy(async () => byMethod(await import("./routes/deferred.tsx"))),
   ),

@@ -1,6 +1,10 @@
 import type { HtmlToken } from "../types.ts";
 import { safe } from "../token.ts";
 
+/**
+ * Render the deferred content in a `template` element, along with a script to
+ * find the placeholder, and replace it with the contents of this template.
+ */
 export async function* substitution(
   id: string,
   children: AsyncIterable<HtmlToken>,

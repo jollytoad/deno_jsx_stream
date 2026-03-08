@@ -21,7 +21,7 @@ function Page({ req, path }: { req: Request; path: string }) {
       </head>
       <body>
         <header>
-          <h1>JSX Streaming Example</h1>
+          <h1>JSX Deferred Streaming Example</h1>
           <p>You are here: {path}</p>
         </header>
         <main>

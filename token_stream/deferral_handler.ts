@@ -5,9 +5,9 @@ import type {
 } from "./types.ts";
 
 /**
- * A default DeferralHandler implementation that races the given promise against a timeout,
- * emitting a placeholder if the timeout is hit, and queuing the eventual promise for
- * later emission.
+ * A default DeferralHandler implementation that races the given promise
+ * against a timeout, emitting a placeholder if the timeout is hit, and
+ * queuing the eventual promise for later emission.
  */
 export function deferralHandler<T>(
   options: DeferralOptions<T>,
