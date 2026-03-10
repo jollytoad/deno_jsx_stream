@@ -55,6 +55,10 @@ export function isSafe(value: unknown): value is HtmlToken {
   return value instanceof _Token;
 }
 
+export function isChunk(value: unknown): value is HtmlToken {
+  return value instanceof _Token && !value.kind && !value.tagName;
+}
+
 export function isTag(value: unknown, kind?: TagKind): value is Tag {
   return value instanceof _Token && !!value.kind && !!value.tagName &&
     (kind ? value.kind === kind : true);

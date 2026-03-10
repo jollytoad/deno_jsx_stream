@@ -1,6 +1,7 @@
 import type { AsyncTransformer } from "@http/token-stream/types";
-import { closeTag, isSafe, isTag, openTag, safe, voidTag } from "../token.ts";
+import { closeTag, isChunk, openTag, safe, voidTag } from "../token.ts";
 import type { AttrName, AttrValue, HtmlToken } from "../types.ts";
+import { isValidTag, isVoidElement } from "@http/html-stream/util";
 
 // DISCLAIMER: this is mostly AI generated slop, I don't like it, but it works,
 // I'd like to tidy it up when I get time.
@@ -10,43 +11,97 @@ import type { AttrName, AttrValue, HtmlToken } from "../types.ts";
  */
 export function expandChunks(): AsyncTransformer<HtmlToken> {
   return async function* (tokens) {
-    const tokenizer = createTokenizer();
+    const { process, flush } = createTokenizer();
 
     for await (const token of tokens) {
-      yield* tokenizer.process(token);
+      yield* process(token);
     }
 
-    yield* tokenizer.flush();
+    yield* flush();
   };
 }
 
-const HTML_VOID_TAGS = new Set([
-  "area",
-  "base",
-  "br",
-  "col",
-  "embed",
-  "hr",
-  "img",
-  "input",
-  "link",
-  "meta",
-  "param",
-  "source",
-  "track",
-  "wbr",
-]);
-
 const State = {
-  NORMAL: 0,
+  INITIAL: 0,
   INCOMPLETE_TAG: 1,
 } as const;
 
 type State = typeof State[keyof typeof State];
 
 function createTokenizer() {
-  let state: State = State.NORMAL;
+  let state: State = State.INITIAL;
   let buffer = "";
+
+  function* process(token: HtmlToken): Iterable<HtmlToken> {
+    if (isChunk(token)) {
+      switch (state) {
+        case State.INITIAL:
+          yield* stateInitial(token);
+          break;
+        case State.INCOMPLETE_TAG:
+          yield* stateIncompleteTag(token);
+          break;
+      }
+    } else {
+      yield* flush();
+      yield token;
+    }
+  }
+
+  function* stateInitial(token: HtmlToken) {
+    const ltIndex = token.indexOf("<");
+    if (ltIndex >= 0) {
+      if (token.includes(">", ltIndex)) {
+        yield* tokenizeChunk(token);
+      } else {
+        state = State.INCOMPLETE_TAG;
+        buffer = token;
+      }
+    } else {
+      yield* tokenizeChunk(token);
+    }
+  }
+
+  function* stateIncompleteTag(token: HtmlToken) {
+    buffer += token;
+
+    const gtIndex = buffer.indexOf(">");
+    if (gtIndex >= 0) {
+      const tagPart = buffer.slice(0, gtIndex + 1);
+      const remainder = buffer.slice(gtIndex + 1);
+
+      const tagContent = tagPart.slice(1, -1);
+      const tag = parseTag(tagContent);
+
+      if (tag) {
+        yield tag;
+      } else {
+        yield safe(tagPart);
+      }
+
+      if (remainder.includes("<") && !remainder.includes(">")) {
+        state = State.INCOMPLETE_TAG;
+      } else if (remainder.includes("<")) {
+        yield* tokenizeChunk(remainder);
+        state = State.INITIAL;
+        buffer = "";
+      } else {
+        if (remainder) {
+          yield safe(remainder);
+        }
+        state = State.INITIAL;
+        buffer = "";
+      }
+    }
+  }
+
+  function* flush(): Iterable<HtmlToken> {
+    if (buffer) {
+      yield safe(buffer);
+      buffer = "";
+      state = State.INITIAL;
+    }
+  }
 
   function* tokenizeChunk(chunk: HtmlToken): Iterable<HtmlToken> {
     let i = 0;
@@ -104,7 +159,7 @@ function createTokenizer() {
       attrsStr = tagContent.slice(spaceIndex + 1).trim();
     }
 
-    if (!isValidTagName(tagName)) {
+    if (!isValidTag(tagName)) {
       return null;
     }
 
@@ -116,16 +171,11 @@ function createTokenizer() {
       ? Object.fromEntries(parseAttributes(attrsStr))
       : undefined;
 
-    if (isVoid || HTML_VOID_TAGS.has(tagName)) {
+    if (isVoid || isVoidElement(tagName)) {
       return voidTag(tagName, attributes);
     }
 
     return openTag(tagName, attributes);
-  }
-
-  function isValidTagName(name: string): boolean {
-    if (!name) return false;
-    return /^[a-zA-Z][a-zA-Z0-9\-]*$/.test(name);
   }
 
   function* parseAttributes(attrsStr: string): Iterable<[AttrName, AttrValue]> {
@@ -170,87 +220,6 @@ function createTokenizer() {
       if (attrsStr === prevRemaining || attrsStr.length === 0) {
         break;
       }
-    }
-  }
-
-  function* process(token: HtmlToken): Iterable<HtmlToken> {
-    if (isTag(token)) {
-      if (buffer) {
-        yield safe(buffer);
-        buffer = "";
-        state = State.NORMAL;
-      }
-      yield token;
-      return;
-    }
-
-    if (isSafe(token)) {
-      if (state === State.NORMAL) {
-        const ltIndex = token.indexOf("<");
-        if (ltIndex === -1) {
-          yield* tokenizeChunk(token);
-          return;
-        }
-
-        const gtIndex = token.indexOf(">", ltIndex);
-        if (gtIndex === -1) {
-          state = State.INCOMPLETE_TAG;
-          buffer = token;
-          return;
-        }
-
-        yield* tokenizeChunk(token);
-        return;
-      }
-
-      buffer += token;
-
-      const gtIndex = buffer.indexOf(">");
-      if (gtIndex === -1) {
-        return;
-      }
-
-      const tagPart = buffer.slice(0, gtIndex + 1);
-      const remainder = buffer.slice(gtIndex + 1);
-
-      const tagContent = tagPart.slice(1, -1);
-      const tag = parseTag(tagContent);
-
-      if (tag) {
-        yield tag;
-      } else {
-        yield safe(tagPart);
-      }
-
-      if (remainder.includes("<") && !remainder.includes(">")) {
-        state = State.INCOMPLETE_TAG;
-      } else if (remainder.includes("<")) {
-        yield* tokenizeChunk(remainder);
-        state = State.NORMAL;
-        buffer = "";
-      } else {
-        if (remainder) {
-          yield safe(remainder);
-        }
-        state = State.NORMAL;
-        buffer = "";
-      }
-      return;
-    }
-
-    if (buffer) {
-      yield safe(buffer);
-      buffer = "";
-      state = State.NORMAL;
-    }
-    yield token;
-  }
-
-  function* flush(): Generator<HtmlToken> {
-    if (buffer) {
-      yield safe(buffer);
-      buffer = "";
-      state = State.NORMAL;
     }
   }
 
