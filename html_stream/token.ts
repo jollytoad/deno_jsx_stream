@@ -1,6 +1,6 @@
 import { escape as escape_ } from "@std/html/entities";
 import { isValidAttr } from "./util.ts";
-import type { AttrName, HtmlToken, Tag, TagKind, TagName } from "./types.ts";
+import type { Attrs, HtmlToken, Tag, TagKind, TagName } from "./types.ts";
 
 /**
  * A string that is deemed safe for rendering,
@@ -9,7 +9,7 @@ import type { AttrName, HtmlToken, Tag, TagKind, TagName } from "./types.ts";
 class _Token extends String implements Partial<Tag> {
   kind?: TagKind;
   tagName?: TagName;
-  attributes?: Record<AttrName, unknown>;
+  attributes?: Attrs;
 }
 
 export function safe(value: unknown): string {
@@ -31,14 +31,14 @@ export function docType(
 
 export function openTag(
   tagName: TagName,
-  attrs: Record<AttrName, unknown> = {},
+  attrs: Attrs = {},
 ): string {
   return _tag(tagName, attrs, "open");
 }
 
 export function voidTag(
   tagName: TagName,
-  attrs: Record<AttrName, unknown> = {},
+  attrs: Attrs = {},
 ): string {
   return _tag(tagName, attrs, "void", "/");
 }
@@ -62,7 +62,7 @@ export function isTag(value: unknown, kind?: TagKind): value is Tag {
 
 function _tag(
   tagName: string,
-  attributes: Record<AttrName, unknown>,
+  attributes: Attrs,
   kind: TagKind,
   close: "/" | "" = "",
 ): string {

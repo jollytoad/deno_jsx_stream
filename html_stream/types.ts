@@ -5,13 +5,15 @@ export type HtmlNode = Node<HtmlToken>;
 export type TagName = string;
 export type TagPattern = string;
 export type AttrName = string;
+export type AttrValue = unknown;
+export type Attrs = Record<AttrName, AttrValue>;
 
 export type TagKind = "open" | "void" | "close";
 
 export type Tag = {
   kind: TagKind;
   tagName: TagName;
-  attributes?: Record<AttrName, unknown>;
+  attributes?: Attrs;
 } & string;
 
 /**

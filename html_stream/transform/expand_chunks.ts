@@ -1,6 +1,6 @@
 import type { AsyncTransformer } from "@http/token-stream/types";
 import { closeTag, isSafe, isTag, openTag, safe, voidTag } from "../token.ts";
-import type { AttrName, HtmlToken } from "../types.ts";
+import type { AttrName, AttrValue, HtmlToken } from "../types.ts";
 
 // DISCLAIMER: this is mostly AI generated slop, I don't like it, but it works,
 // I'd like to tidy it up when I get time.
@@ -101,18 +101,20 @@ function createTokenizer() {
       attrsStr = "";
     } else {
       tagName = tagContent.slice(0, spaceIndex).toLowerCase();
-      attrsStr = tagContent.slice(spaceIndex + 1);
+      attrsStr = tagContent.slice(spaceIndex + 1).trim();
     }
 
     if (!isValidTagName(tagName)) {
       return null;
     }
 
-    const attributes = parseAttributes(attrsStr);
-
     if (isClose) {
       return closeTag(tagName);
     }
+
+    const attributes = attrsStr
+      ? Object.fromEntries(parseAttributes(attrsStr))
+      : undefined;
 
     if (isVoid || HTML_VOID_TAGS.has(tagName)) {
       return voidTag(tagName, attributes);
@@ -126,63 +128,49 @@ function createTokenizer() {
     return /^[a-zA-Z][a-zA-Z0-9\-]*$/.test(name);
   }
 
-  function parseAttributes(attrsStr: string): Record<AttrName, unknown> {
-    const attributes: Record<string, unknown> = {};
-    if (!attrsStr.trim()) return attributes;
-
-    let remaining = attrsStr.trim();
-    while (remaining.length > 0) {
-      const match = remaining.match(/^([a-zA-Z_:][a-zA-Z0-9_:\-\.]*)(?:\s*=)?/);
-      if (!match || !match[1]) {
+  function* parseAttributes(attrsStr: string): Iterable<[AttrName, AttrValue]> {
+    while (attrsStr.length > 0) {
+      const match = attrsStr.match(/^([a-zA-Z_:][a-zA-Z0-9_:\-\.]*)(?:\s*=)?/);
+      if (!match?.[1]) {
         break;
       }
 
       const attrName = match[1];
-      let attrValue: unknown = true;
-      const prevRemaining = remaining;
+      let attrValue: AttrValue = true;
+      const prevRemaining = attrsStr;
 
-      const afterName = remaining.slice(match[0].length).trimStart();
+      const afterName = attrsStr.slice(match[0].length).trimStart();
 
-      if (afterName.startsWith('"')) {
-        const endQuote = afterName.indexOf('"', 1);
+      const quote = afterName[0];
+      if (quote === '"' || quote === "'") {
+        const endQuote = afterName.indexOf(quote, 1);
         if (endQuote === -1) {
           attrValue = afterName.slice(1);
-          remaining = "";
+          attrsStr = "";
         } else {
           attrValue = afterName.slice(1, endQuote);
-          remaining = afterName.slice(endQuote + 1).trimStart();
-        }
-      } else if (afterName.startsWith("'")) {
-        const endQuote = afterName.indexOf("'", 1);
-        if (endQuote === -1) {
-          attrValue = afterName.slice(1);
-          remaining = "";
-        } else {
-          attrValue = afterName.slice(1, endQuote);
-          remaining = afterName.slice(endQuote + 1).trimStart();
+          attrsStr = afterName.slice(endQuote + 1).trimStart();
         }
       } else if (afterName.length > 0) {
         const valueMatch = afterName.match(/^[a-zA-Z0-9_\-\.]+/);
         if (valueMatch) {
           attrValue = valueMatch[0];
-          remaining = afterName.slice(valueMatch[0].length).trimStart();
+          attrsStr = afterName.slice(valueMatch[0].length).trimStart();
         } else {
-          remaining = "";
+          attrsStr = "";
         }
       } else {
-        remaining = "";
+        attrsStr = "";
       }
 
       if (attrName) {
-        attributes[attrName] = attrValue;
+        yield [attrName, attrValue];
       }
 
-      if (remaining === prevRemaining || remaining.length === 0) {
+      if (attrsStr === prevRemaining || attrsStr.length === 0) {
         break;
       }
     }
-
-    return attributes;
   }
 
   function* process(token: HtmlToken): Iterable<HtmlToken> {
