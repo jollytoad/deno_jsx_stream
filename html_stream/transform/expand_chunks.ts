@@ -48,41 +48,38 @@ function createTokenizer() {
   let state: State = State.NORMAL;
   let buffer = "";
 
-  function tokenizeChunk(chunk: string): HtmlToken[] {
-    const tokens: HtmlToken[] = [];
+  function* tokenizeChunk(chunk: HtmlToken): Iterable<HtmlToken> {
     let i = 0;
 
     while (i < chunk.length) {
       const ltIndex = chunk.indexOf("<", i);
       if (ltIndex === -1) {
         if (i < chunk.length) {
-          tokens.push(safe(chunk.slice(i)));
+          yield safe(chunk.slice(i));
         }
         break;
       }
 
       if (ltIndex > i) {
-        tokens.push(safe(chunk.slice(i, ltIndex)));
+        yield safe(chunk.slice(i, ltIndex));
       }
 
       const closeIndex = chunk.indexOf(">", ltIndex);
       if (closeIndex === -1) {
-        tokens.push(safe(chunk.slice(ltIndex)));
+        yield safe(chunk.slice(ltIndex));
         break;
       }
 
       const tagContent = chunk.slice(ltIndex + 1, closeIndex);
       const tag = parseTag(tagContent);
       if (tag) {
-        tokens.push(tag);
+        yield tag;
       } else {
-        tokens.push(safe(chunk.slice(ltIndex, closeIndex + 1)));
+        yield safe(chunk.slice(ltIndex, closeIndex + 1));
       }
 
       i = closeIndex + 1;
     }
-
-    return tokens;
   }
 
   function parseTag(content: string): HtmlToken | null {
@@ -188,41 +185,41 @@ function createTokenizer() {
     return attributes;
   }
 
-  function process(token: HtmlToken): HtmlToken[] {
-    const result: HtmlToken[] = [];
-
+  function* process(token: HtmlToken): Iterable<HtmlToken> {
     if (isTag(token)) {
       if (buffer) {
-        result.push(safe(buffer));
+        yield safe(buffer);
         buffer = "";
         state = State.NORMAL;
       }
-      result.push(token);
-      return result;
+      yield token;
+      return;
     }
 
     if (isSafe(token)) {
       if (state === State.NORMAL) {
         const ltIndex = token.indexOf("<");
         if (ltIndex === -1) {
-          return tokenizeChunk(token);
+          yield* tokenizeChunk(token);
+          return;
         }
 
         const gtIndex = token.indexOf(">", ltIndex);
         if (gtIndex === -1) {
           state = State.INCOMPLETE_TAG;
           buffer = token;
-          return [];
+          return;
         }
 
-        return tokenizeChunk(token);
+        yield* tokenizeChunk(token);
+        return;
       }
 
       buffer += token;
 
       const gtIndex = buffer.indexOf(">");
       if (gtIndex === -1) {
-        return [];
+        return;
       }
 
       const tagPart = buffer.slice(0, gtIndex + 1);
@@ -232,44 +229,41 @@ function createTokenizer() {
       const tag = parseTag(tagContent);
 
       if (tag) {
-        result.push(tag);
+        yield tag;
       } else {
-        result.push(safe(tagPart));
+        yield safe(tagPart);
       }
 
       if (remainder.includes("<") && !remainder.includes(">")) {
         state = State.INCOMPLETE_TAG;
       } else if (remainder.includes("<")) {
-        result.push(...tokenizeChunk(remainder));
+        yield* tokenizeChunk(remainder);
         state = State.NORMAL;
         buffer = "";
       } else {
         if (remainder) {
-          result.push(safe(remainder));
+          yield safe(remainder);
         }
         state = State.NORMAL;
         buffer = "";
       }
-      return result;
+      return;
     }
 
     if (buffer) {
-      result.push(safe(buffer));
+      yield safe(buffer);
       buffer = "";
       state = State.NORMAL;
     }
-    result.push(token);
-    return result;
+    yield token;
   }
 
-  function flush(): HtmlToken[] {
-    const result: HtmlToken[] = [];
+  function* flush(): Generator<HtmlToken> {
     if (buffer) {
-      result.push(safe(buffer));
+      yield safe(buffer);
       buffer = "";
       state = State.NORMAL;
     }
-    return result;
   }
 
   return { process, flush };

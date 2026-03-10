@@ -8,11 +8,11 @@ export type AttrName = string;
 
 export type TagKind = "open" | "void" | "close";
 
-export interface Tag {
+export type Tag = {
   kind: TagKind;
   tagName: TagName;
   attributes?: Record<AttrName, unknown>;
-}
+} & string;
 
 /**
  * A HTML token may be a tag or text.
