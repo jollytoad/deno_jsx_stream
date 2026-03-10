@@ -11,6 +11,7 @@
     "./defer/placeholder": "./defer/placeholder.ts",
     "./defer/substitution": "./defer/substitution.ts",
     "./template": "./template.ts",
+    "./transform/expand-chunks": "./transform/expand_chunks.ts",
     "./transform/prepend-doctype": "./transform/prepend_doctype.ts",
     "./transform/tag-hooks": "./transform/tag_hooks.ts",
     "./hooks/prettify": "./hooks/prettify.ts",

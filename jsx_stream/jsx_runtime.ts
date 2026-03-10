@@ -4,7 +4,7 @@ import { streamElement } from "./stream_element.ts";
 import { streamFragment } from "@http/html-stream/stream-fragment";
 import { streamUnknown } from "./stream_unknown.ts";
 import { html } from "@http/html-stream/template";
-import { escape, partialHtml, safe } from "@http/html-stream/token";
+import { escape, safe } from "@http/html-stream/token";
 import { isValidAttr } from "@http/html-stream/util";
 import type { AttrName, HtmlNode } from "@http/html-stream/types";
 
@@ -26,7 +26,7 @@ export const jsxEscape = streamFragment;
 
 export function jsxAttr(name: AttrName, value: unknown): string {
   if (isValidAttr(name, value)) {
-    return partialHtml(`${name}="${escape(String(value))}"`);
+    return safe(`${name}="${escape(String(value))}"`);
   } else {
     return safe("");
   }

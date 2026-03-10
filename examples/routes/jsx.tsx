@@ -1,12 +1,16 @@
 import { renderHtmlResponse } from "@http/html-stream";
 import { tagHooks } from "@http/html-stream/transform/tag-hooks";
 import { prettify } from "@http/html-stream/hooks/prettify";
+import { expandChunks } from "@http/html-stream/transform/expand-chunks";
 
 export function GET(req: Request, match: URLPatternResult) {
   return renderHtmlResponse(
     <Page req={req} path={match.pathname.input} />,
     {
-      transformers: [tagHooks(...prettify())],
+      transformers: [
+        expandChunks(),
+        tagHooks(...prettify()),
+      ],
     },
   );
 }
