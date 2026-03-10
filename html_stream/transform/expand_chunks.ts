@@ -37,10 +37,15 @@ const HTML_VOID_TAGS = new Set([
   "wbr",
 ]);
 
-type TokenizerState = "NORMAL" | "INCOMPLETE_TAG";
+const State = {
+  NORMAL: 0,
+  INCOMPLETE_TAG: 1,
+} as const;
+
+type State = typeof State[keyof typeof State];
 
 function createTokenizer() {
-  let state: TokenizerState = "NORMAL";
+  let state: State = State.NORMAL;
   let buffer = "";
 
   function tokenizeChunk(chunk: string): HtmlToken[] {
@@ -190,14 +195,14 @@ function createTokenizer() {
       if (buffer) {
         result.push(safe(buffer));
         buffer = "";
-        state = "NORMAL";
+        state = State.NORMAL;
       }
       result.push(token);
       return result;
     }
 
     if (isSafe(token)) {
-      if (state === "NORMAL") {
+      if (state === State.NORMAL) {
         const ltIndex = token.indexOf("<");
         if (ltIndex === -1) {
           return tokenizeChunk(token);
@@ -205,7 +210,7 @@ function createTokenizer() {
 
         const gtIndex = token.indexOf(">", ltIndex);
         if (gtIndex === -1) {
-          state = "INCOMPLETE_TAG";
+          state = State.INCOMPLETE_TAG;
           buffer = token;
           return [];
         }
@@ -233,16 +238,16 @@ function createTokenizer() {
       }
 
       if (remainder.includes("<") && !remainder.includes(">")) {
-        state = "INCOMPLETE_TAG";
+        state = State.INCOMPLETE_TAG;
       } else if (remainder.includes("<")) {
         result.push(...tokenizeChunk(remainder));
-        state = "NORMAL";
+        state = State.NORMAL;
         buffer = "";
       } else {
         if (remainder) {
           result.push(safe(remainder));
         }
-        state = "NORMAL";
+        state = State.NORMAL;
         buffer = "";
       }
       return result;
@@ -251,7 +256,7 @@ function createTokenizer() {
     if (buffer) {
       result.push(safe(buffer));
       buffer = "";
-      state = "NORMAL";
+      state = State.NORMAL;
     }
     result.push(token);
     return result;
@@ -262,7 +267,7 @@ function createTokenizer() {
     if (buffer) {
       result.push(safe(buffer));
       buffer = "";
-      state = "NORMAL";
+      state = State.NORMAL;
     }
     return result;
   }
