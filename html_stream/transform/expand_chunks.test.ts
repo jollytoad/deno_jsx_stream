@@ -137,3 +137,8 @@ Deno.test("interpolated chunks", async () => {
   const output = await expand(html`${safe('<')}${'div'} ${safe('class="some')}${safe('-thing">')}`);
   assertTokens(output, openTag("div", { class: "some-thing" }));
 });
+
+Deno.test("invalid tag followed by tag token", async () => {
+  const output = await expand(html`<div ${openTag('span')}`);
+  assertTokens(output, safe("<div "), openTag("span"));
+});

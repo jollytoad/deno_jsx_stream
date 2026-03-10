@@ -1,5 +1,5 @@
 import type { AsyncTransformer } from "@http/token-stream/types";
-import { closeTag, isSafe, openTag, safe, voidTag } from "../token.ts";
+import { closeTag, isSafe, isTag, openTag, safe, voidTag } from "../token.ts";
 import type { AttrName, HtmlToken } from "../types.ts";
 
 // DISCLAIMER: this is mostly AI generated slop, I don't like it, but it works,
@@ -186,26 +186,34 @@ function createTokenizer() {
   function process(token: HtmlToken): HtmlToken[] {
     const result: HtmlToken[] = [];
 
-    if (isSafe(token)) {
-      const str = token as string;
+    if (isTag(token)) {
+      if (buffer) {
+        result.push(safe(buffer));
+        buffer = "";
+        state = "NORMAL";
+      }
+      result.push(token);
+      return result;
+    }
 
+    if (isSafe(token)) {
       if (state === "NORMAL") {
-        const ltIndex = str.indexOf("<");
+        const ltIndex = token.indexOf("<");
         if (ltIndex === -1) {
-          return tokenizeChunk(str);
+          return tokenizeChunk(token);
         }
 
-        const gtIndex = str.indexOf(">", ltIndex);
+        const gtIndex = token.indexOf(">", ltIndex);
         if (gtIndex === -1) {
           state = "INCOMPLETE_TAG";
-          buffer = str;
+          buffer = token;
           return [];
         }
 
-        return tokenizeChunk(str);
+        return tokenizeChunk(token);
       }
 
-      buffer += str;
+      buffer += token;
 
       const gtIndex = buffer.indexOf(">");
       if (gtIndex === -1) {
