@@ -8,7 +8,7 @@ import {
   voidTag,
 } from "../token.ts";
 import type { AttrName, Attrs, AttrValue, HtmlToken } from "../types.ts";
-import { isValidAttr, isValidTag, isVoidElement } from "@http/html-stream/util";
+import { isValidAttr, isValidTag, isVoidElement } from "../util.ts";
 
 /**
  * Options to change the tokenizer behaviour.
