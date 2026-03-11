@@ -1,26 +1,45 @@
 import type { AsyncTransformer } from "@http/token-stream/types";
 import { closeTag, isChunk, openTag, safe, voidTag } from "../token.ts";
-import type { AttrName, AttrValue, HtmlToken } from "../types.ts";
-import { isValidTag, isVoidElement } from "@http/html-stream/util";
+import type { AttrName, Attrs, AttrValue, HtmlToken } from "../types.ts";
+import { isValidAttr, isValidTag, isVoidElement } from "@http/html-stream/util";
 
 /**
- * Expand chunks of html embedded within safe token into tag tokens.
+ * Options to change the tokenizer behaviour.
+ */
+export interface TokenizeOptions {
+  /**
+   * Expand self-closing tags to open & close.
+   * `<div/>` -> `<div></div>`
+   */
+  selfClosing?: boolean;
+  /**
+   * By default the tokenizer will return invalid chunks as safe tokens,
+   * and drop invalid attributes.
+   * Setting this will throw an error instead.
+   */
+  throwErrors?: boolean;
+}
+
+/**
+ * Tokenize chunks of html embedded within safe token into tag tokens.
  *
  * NOTE: This is a very simplified tokenization expecting well-formed html,
  * it does not validate or attempt to handle the many edge cases of a true
  * html parser. It should only be used on trusted content.
  */
-export function expandChunks(): AsyncTransformer<HtmlToken> {
+export function tokenize(
+  options?: TokenizeOptions,
+): AsyncTransformer<HtmlToken | string, HtmlToken> {
   return async function* (tokens) {
     let buffer = "";
 
     for await (const token of tokens) {
-      yield* tokenize(token);
+      yield* start(token);
     }
 
     yield* flush();
 
-    function* tokenize(token: HtmlToken): Iterable<HtmlToken> {
+    function* start(token: HtmlToken): Iterable<HtmlToken> {
       if (isChunk(token)) {
         buffer += token;
         yield* tokenizeBuffer();
@@ -58,7 +77,7 @@ export function expandChunks(): AsyncTransformer<HtmlToken> {
 
       if (gtIndex >= 0) {
         // parse tag content, trim buffer
-        yield parseTag(consume(gtIndex + 1));
+        yield* parseTag(consume(gtIndex + 1));
 
         // continue with buffer
         yield* tokenizeBuffer();
@@ -73,33 +92,58 @@ export function expandChunks(): AsyncTransformer<HtmlToken> {
       return left;
     }
 
-    function parseTag(tag: string): HtmlToken {
+    function* parseTag(tag: string): Iterable<HtmlToken> {
       if (tag[1] === "!") {
-        return safe(tag);
+        yield safe(tag);
+        return;
       }
-
-      const isClose = tag[1] === "/";
-      const isVoid = tag.endsWith("/>");
 
       const m = /^\<\/?([^\s\/\>]+)(\s+.*)?\/?\>$/.exec(tag);
       const tagName = m?.[1]?.toLowerCase();
       const attrStr = m?.[2]?.trim();
 
-      if (!tagName || !isValidTag(tagName)) return safe(tag);
-
-      if (isClose) {
-        return closeTag(tagName);
+      if (!m && options?.throwErrors) {
+        throw new Error(`Invalid tag: ${tag}`);
       }
 
-      const attributes = attrStr
-        ? Object.fromEntries(parseAttributes(attrStr))
-        : undefined;
-
-      if (isVoid || isVoidElement(tagName)) {
-        return voidTag(tagName, attributes);
+      if (!tagName || !isValidTag(tagName)) {
+        if (options?.throwErrors) {
+          throw new Error(`Invalid tag name: ${tagName}`);
+        }
+        yield safe(tag);
+        return;
       }
 
-      return openTag(tagName, attributes);
+      if (tag[1] === "/") {
+        yield closeTag(tagName);
+        return;
+      }
+
+      let attrs: Attrs | undefined;
+
+      if (attrStr) {
+        for (const [name, value] of parseAttributes(attrStr)) {
+          if (isValidAttr(name, value)) {
+            attrs ??= {};
+            attrs[name] = value;
+          } else if (options?.throwErrors) {
+            throw new Error(
+              `Invalid attribute: ${name}=${JSON.stringify(value)}`,
+            );
+          }
+        }
+      }
+
+      if (isVoidElement(tagName)) {
+        yield voidTag(tagName, attrs);
+        return;
+      }
+
+      yield openTag(tagName, attrs);
+
+      if (options?.selfClosing && tag.endsWith("/>")) {
+        yield closeTag(tagName);
+      }
     }
 
     function* parseAttributes(
@@ -109,6 +153,10 @@ export function expandChunks(): AsyncTransformer<HtmlToken> {
         const m = attrStr.match(/^([^\s=\/]+)(=)?/);
         const attrName = m?.[1];
         const hasEquals = !!m?.[2];
+
+        if (!m && options?.throwErrors) {
+          throw new Error(`Invalid attributes: ${attrStr}`);
+        }
 
         if (!attrName) break;
 
@@ -123,6 +171,8 @@ export function expandChunks(): AsyncTransformer<HtmlToken> {
               attrStr = attrStr.slice(endQuoteIndex + 1).trimStart();
               continue;
             }
+          } else if (options?.throwErrors) {
+            throw new Error(`Invalid attribute: ${m[0]}`);
           }
 
           attrStr = "";

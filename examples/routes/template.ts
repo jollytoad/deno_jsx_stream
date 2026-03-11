@@ -1,13 +1,13 @@
 import { renderHtmlResponse } from "@http/html-stream";
+import { tokenize } from "@http/html-stream/transform/tokenize";
 import { tagHooks } from "@http/html-stream/transform/tag-hooks";
-import { expandChunks } from "@http/html-stream/transform/expand-chunks";
 import { prettify } from "@http/html-stream/hooks/prettify";
 import { html } from "@http/html-stream/template";
 
 export function GET(req: Request, match: URLPatternResult) {
   return renderHtmlResponse(page(req, match.pathname.input), {
     transformers: [
-      expandChunks(),
+      tokenize(),
       tagHooks(...prettify()),
     ],
   });
