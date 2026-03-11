@@ -120,11 +120,6 @@
     }
   },
   "workspace": {
-    "dependencies": [
-      "jsr:@http/html-stream@0.9.0",
-      "jsr:@http/jsx-stream@0.9.0",
-      "jsr:@http/token-stream@0.9.0"
-    ],
     "members": {
       "examples": {
         "dependencies": [
