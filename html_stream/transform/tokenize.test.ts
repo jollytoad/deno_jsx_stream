@@ -1,7 +1,7 @@
 // deno-fmt-ignore-file
 import { tokenize, type TokenizeOptions } from "./tokenize.ts";
 import { html } from "../template.ts";
-import { closeTag, openTag, safe, voidTag } from "../token.ts";
+import { closeTag, docType, openTag, safe, voidTag } from "../token.ts";
 import type { HtmlNode, HtmlToken } from "../types.ts";
 import { assertEquals, assertRejects } from "@std/assert";
 import { flattenTokens } from "@http/token-stream/flatten-tokens";
@@ -31,6 +31,11 @@ Deno.test("void tag", async () => {
 Deno.test("close tag", async () => {
   const output = await doTokenize(html`</div>`);
   assertTokens(output, closeTag("div"));
+});
+
+Deno.test("doctype tag", async () => {
+  const output = await doTokenize(html`<!DOCTYPE html>`);
+  assertTokens(output, docType("html"));
 });
 
 Deno.test("text content", async () => {

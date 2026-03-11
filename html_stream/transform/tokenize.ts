@@ -1,5 +1,12 @@
 import type { AsyncTransformer } from "@http/token-stream/types";
-import { closeTag, isChunk, openTag, safe, voidTag } from "../token.ts";
+import {
+  closeTag,
+  docType,
+  isChunk,
+  openTag,
+  safe,
+  voidTag,
+} from "../token.ts";
 import type { AttrName, Attrs, AttrValue, HtmlToken } from "../types.ts";
 import { isValidAttr, isValidTag, isVoidElement } from "@http/html-stream/util";
 
@@ -94,7 +101,14 @@ export function tokenize(
 
     function* parseTag(tag: string): Iterable<HtmlToken> {
       if (tag[1] === "!") {
-        yield safe(tag);
+        const m = /^\<\!DOCTYPE\s+([^\>]*)\>$/.exec(tag);
+        if (m) {
+          yield docType(m[1]);
+        } else if (options?.throwErrors) {
+          throw new Error(`Invalid tag: ${tag}`);
+        } else {
+          yield safe(tag);
+        }
         return;
       }
 
