@@ -3,7 +3,7 @@ import { tokenize, type TokenizeOptions } from "./tokenize.ts";
 import { html } from "../template.ts";
 import { closeTag, openTag, safe, voidTag } from "../token.ts";
 import type { HtmlNode, HtmlToken } from "../types.ts";
-import { assertEquals } from "@std/assert";
+import { assertEquals, assertRejects } from "@std/assert";
 import { flattenTokens } from "@http/token-stream/flatten-tokens";
 
 function doTokenize(input: Iterable<HtmlNode>, options?: TokenizeOptions): Promise<HtmlToken[]> {
@@ -139,7 +139,7 @@ Deno.test("interpolated attribute value", async () => {
 });
 
 Deno.test("interpolated attribute name", async () => {
-  const output = await doTokenize(html`<div ${'class'}="some-thing">`);
+  const output = await doTokenize(html`\u{3C}div ${'class'}="some-thing">`);
   assertTokens(output, openTag("div", { class: "some-thing" }));
 });
 
@@ -154,6 +154,30 @@ Deno.test("interpolated chunks", async () => {
 });
 
 Deno.test("invalid tag followed by tag token", async () => {
-  const output = await doTokenize(html`<div ${openTag('span')}`);
+  const output = await doTokenize(html`\u{3C}div ${openTag('span')}`);
   assertTokens(output, safe("<div "), openTag("span"));
+});
+
+Deno.test("invalid tag throws error when throwErrors is true", async () => {
+  await assertRejects(
+    () => doTokenize(html`< >`, { throwErrors: true }),
+    Error,
+    "Invalid tag: < >",
+  );
+});
+
+Deno.test("invalid attribute throws error when throwErrors is true", async () => {
+  await assertRejects(
+    () => doTokenize(html`<div =value>`, { throwErrors: true }),
+    Error,
+    "Invalid attribute",
+  );
+});
+
+Deno.test("invalid tag name throws error when throwErrors is true", async () => {
+  await assertRejects(
+    () => doTokenize(html`<123>`, { throwErrors: true }),
+    Error,
+    "Invalid tag name: 123",
+  );
 });
