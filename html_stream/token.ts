@@ -1,6 +1,14 @@
 import { escape as escape_ } from "@std/html/entities";
 import { isValidAttr } from "./util.ts";
-import type { Attrs, HtmlToken, Tag, TagKind, TagName } from "./types.ts";
+import type {
+  AttrName,
+  Attrs,
+  AttrValue,
+  HtmlToken,
+  Tag,
+  TagKind,
+  TagName,
+} from "./types.ts";
 
 /**
  * A string that is deemed safe for rendering,
@@ -31,14 +39,14 @@ export function docType(
 
 export function openTag(
   tagName: TagName,
-  attrs: Attrs = {},
+  attrs?: Attrs,
 ): string {
   return _tag(tagName, attrs, "open");
 }
 
 export function voidTag(
   tagName: TagName,
-  attrs: Attrs = {},
+  attrs?: Attrs,
 ): string {
   return _tag(tagName, attrs, "void", "/");
 }
@@ -47,7 +55,12 @@ export function closeTag(tagName: TagName): string {
   const token = new _Token(`</${tagName}>`);
   token.kind = "close";
   token.tagName = tagName;
+  return token as string;
+}
 
+export function attr(name: AttrName, value: AttrValue): string {
+  const token = new _Token(_attr([name, value]));
+  token.attributes = { [name]: value };
   return token as string;
 }
 
@@ -66,26 +79,28 @@ export function isTag(value: unknown, kind?: TagKind): value is Tag {
 
 function _tag(
   tagName: string,
-  attributes: Attrs,
+  attributes: Attrs | undefined,
   kind: TagKind,
   close: "/" | "" = "",
 ): string {
-  let attrStr = "";
-
-  for (const [name, value] of Object.entries(attributes)) {
-    if (isValidAttr(name, value)) {
-      attrStr += ` ${name}`;
-
-      if (value !== true) {
-        attrStr += `="${escape(value)}"`;
-      }
-    }
-  }
-
-  const token = new _Token(`<${tagName}${attrStr}${close}>`);
+  const attrStr = _attrs(attributes);
+  const token = new _Token(
+    `<${tagName}${attrStr ? " " : ""}${attrStr}${close}>`,
+  );
   token.kind = kind;
   token.tagName = tagName;
   token.attributes = attributes;
-
   return token as string;
+}
+
+function _attrs(attrs?: Attrs) {
+  return attrs ? Object.entries(attrs).map(_attr).join(" ") : "";
+}
+
+function _attr([name, value]: [AttrName, AttrValue]): string {
+  if (isValidAttr(name, value)) {
+    return name + (value === true ? "" : `="${escape(String(value))}"`);
+  } else {
+    return "";
+  }
 }

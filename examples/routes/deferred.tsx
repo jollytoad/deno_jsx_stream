@@ -17,7 +17,7 @@ function Page({ req, path }: { req: Request; path: string }) {
   return (
     <html>
       <head>
-        <link rel="stylesheet" href="https://unpkg.com/missing.css@1.1.3" />
+        <link rel="stylesheet" href="https://unpkg.com/missing.css@1.2.0" />
       </head>
       <body>
         <header>

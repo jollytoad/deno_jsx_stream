@@ -3,10 +3,10 @@ import { streamComponent } from "./stream_component.ts";
 import { streamElement } from "./stream_element.ts";
 import { streamFragment } from "@http/html-stream/stream-fragment";
 import { streamUnknown } from "./stream_unknown.ts";
+import { streamAttr } from "./stream_attr.ts";
 import { html } from "@http/html-stream/template";
-import { escape, safe } from "@http/html-stream/token";
-import { isValidAttr } from "@http/html-stream/util";
-import type { AttrName, HtmlNode } from "@http/html-stream/types";
+import { isValidTag } from "@http/html-stream/util";
+import type { HtmlNode } from "@http/html-stream/types";
 
 export function jsx(type: any, props: any): HtmlNode {
   if (typeof type === "function") {
@@ -21,20 +21,8 @@ export function jsx(type: any, props: any): HtmlNode {
 }
 
 export const jsxTemplate = html;
-
 export const jsxEscape = streamFragment;
-
-export function jsxAttr(name: AttrName, value: unknown): string {
-  if (isValidAttr(name, value)) {
-    return safe(`${name}="${escape(String(value))}"`);
-  } else {
-    return safe("");
-  }
-}
-
-export function isValidTag(tag: string): boolean {
-  return /^[a-zA-Z][a-zA-Z0-9\-]*$/.test(tag);
-}
+export const jsxAttr = streamAttr;
 
 export const jsxs = jsx;
 export const jsxDEV = jsx;

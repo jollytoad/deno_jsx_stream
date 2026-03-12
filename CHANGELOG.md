@@ -6,7 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.11.0]
+
+### Fixed
+
+- [@http/jsx-stream] allow promise-like attributes for `jsx: "precompile"`
+
+### Added
+
+- [@http/token-stream] `logTokens` transformer for debugging
+
+## [0.10.0]
 
 ### Changed
 

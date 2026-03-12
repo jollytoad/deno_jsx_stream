@@ -5,6 +5,7 @@
     "./transform/as-encoded": "./transform/as_encoded.ts",
     "./transform/as-strings": "./transform/as_strings.ts",
     "./transform/catch-errors": "./transform/catch_errors.ts",
+    "./transform/log-tokens": "./transform/log_tokens.ts",
     "./transform/safety-filter": "./transform/safety_filter.ts",
     "./transform/slow-stream": "./transform/slow_stream.ts",
     "./deferral-handler": "./deferral_handler.ts",
