@@ -16,21 +16,28 @@ export function GET(req: Request, match: URLPatternResult) {
 function page(req: Request, path: string) {
   return html`
     <html>
+      <head>
+        <link rel="stylesheet" href="https://unpkg.com/missing.css@1.2.0" />
+      </head>
       <body>
-        <h1>Tagged Template Streaming Example</h1>
-        <p>You are here: ${path}</p>
-        <h2>Headers</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rows(req.headers.entries())}
-          </tbody>
-        </table>
+        <header>
+          <h1>Tagged Template Streaming Example</h1>
+          <p>You are here: ${path}</p>
+        </header>
+        <main>
+          <h2>Headers</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows(req.headers.entries())}
+            </tbody>
+          </table>
+        </main>
       </body>
     </html>
   `;
