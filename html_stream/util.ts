@@ -1,3 +1,8 @@
+/**
+ * Utilities for validating tags, attributes, and void elements.
+ * @module
+ */
+
 import type { AttrName, TagName } from "./types.ts";
 
 const VOID_ELEMENTS = new Set([

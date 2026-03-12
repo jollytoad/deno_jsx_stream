@@ -1,6 +1,9 @@
 import { safe } from "../token.ts";
 import type { TagHook } from "../types.ts";
 
+/**
+ * Tag hook that adds indentation for pretty-printed HTML.
+ */
 export function prettify(options?: { indent?: number }): TagHook[] {
   const indent = " ".repeat(options?.indent ?? 2);
   return [{

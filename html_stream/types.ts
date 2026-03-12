@@ -1,3 +1,8 @@
+/**
+ * Types for HTML tokens, tags, attributes, and tag hooks.
+ * @module
+ */
+
 import type { Node } from "@http/token-stream/types";
 
 export type HtmlNode = Node<HtmlToken>;

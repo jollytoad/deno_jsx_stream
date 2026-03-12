@@ -1,3 +1,8 @@
+/**
+ * Functions for creating safe tokens, HTML escaping, and tag tokens.
+ * @module
+ */
+
 import { escape as escape_ } from "@std/html/entities";
 import { isValidAttr } from "./util.ts";
 import type {

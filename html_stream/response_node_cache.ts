@@ -1,3 +1,9 @@
+/**
+ * Cache for storing {@linkcode HtmlNode}s against a
+ * {@linkcode Response}s to avoid later reparsing.
+ * @module
+ */
+
 import type { HtmlNode } from "./types.ts";
 
 const cache = new WeakMap<Response, HtmlNode>();

@@ -1,3 +1,9 @@
+/**
+ * JSX runtime that handles components, fragments, and intrinsic elements,
+ * returning {@linkcode HtmlNode}s.
+ * @module
+ */
+
 // deno-lint-ignore-file no-explicit-any
 import { streamComponent } from "./stream_component.ts";
 import { streamElement } from "./stream_element.ts";

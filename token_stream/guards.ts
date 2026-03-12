@@ -1,3 +1,9 @@
+/**
+ * Type guards for checking primitives, promises, iterables, async iterables,
+ * and node iterations.
+ * @module
+ */
+
 import type { NodeIteration } from "./types.ts";
 
 type PrimitiveValue = string | number | boolean | bigint;
