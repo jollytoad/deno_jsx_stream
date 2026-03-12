@@ -11,12 +11,14 @@ asynchronous content.
 
 ## `@http/html-stream`
 
-Provides HTML specific tokens and utility functions
+Provides HTML specific tokens and utility functions, including a `html` tagged
+template literal function.
 
 ## `@http/jsx-stream`
 
-Provide a JSX engine making use of `@http/token-stream` and `@http/html-stream`
-to support (primarily server-side) rendering of async components.
+Provides a JSX runtime making use of `@http/token-stream` and
+`@http/html-stream` to support (primarily server-side) rendering of async
+components.
 
 ## Examples
 
