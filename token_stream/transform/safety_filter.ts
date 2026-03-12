@@ -1,7 +1,10 @@
 import type { AsyncTransformer } from "../types.ts";
 
 /**
- * Filter safe tokens using a given function, and warn if a raw string or unknown/safe token is encountered
+ * Filter safe tokens using a given function, and warn if a raw string or
+ * unknown/unsafe token is encountered
+ *
+ * @param isSafe a function to check the token is safe
  */
 export function safetyFilter<T>(
   isSafe: (token: unknown) => token is T,

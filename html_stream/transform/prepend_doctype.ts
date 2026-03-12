@@ -2,6 +2,9 @@ import type { AsyncTransformer } from "@http/token-stream/types";
 import { docType } from "../token.ts";
 import type { HtmlToken } from "../types.ts";
 
+/**
+ * Transformer to prepend a DOCTYPE token to a HTML stream.
+ */
 export function prependDocType(
   type = "html",
 ): AsyncTransformer<HtmlToken> {

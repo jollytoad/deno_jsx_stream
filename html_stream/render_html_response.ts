@@ -3,7 +3,7 @@ import type { RenderOptions } from "@http/token-stream/types";
 import { renderHtmlBody } from "./render_html_body.ts";
 
 /**
- * Options for `renderHtmlResponse` function
+ * Options for the {@linkcode renderHtmlResponse} function
  */
 export type RenderHtmlResponseOptions = RenderOptions<HtmlToken> & {
   /**
@@ -32,7 +32,8 @@ export type RenderHtmlResponseOptions = RenderOptions<HtmlToken> & {
 };
 
 /**
- * Render the given node as a HTML {@linkcode Response} with a prepended DOCTYPE.
+ * Render the given node as a HTML {@linkcode Response} with a
+ * prepended DOCTYPE.
  *
  * @param node the HTML node
  * @param options rendering options

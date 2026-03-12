@@ -13,8 +13,29 @@ import type {
 } from "./types.ts";
 
 /**
- * @param node
- * @param deferrals
+ * Flattens a tree of nodes into a stream of tokens.
+ *
+ * Recursively processes nodes, handling plain values, synchronous iterables,
+ * async iterables, and promises.
+ *
+ * @param node the root node
+ * @param deferrals an optional strategy for handling slow-resolving async nodes
+ * @returns An async iterable of tokens
+ *
+ * @example
+ * ```ts
+ * import { flattenTokens } from "@http/token-stream/flatten-tokens";
+ *
+ * async function* generateNodes() {
+ *   yield "Hello";
+ *   yield* [" ", "World"];
+ *   yield "!";
+ * }
+ *
+ * for await (const token of flattenTokens(generateNodes())) {
+ *   console.log(token); // "Hello", " ", "World", "!"
+ * }
+ * ```
  */
 export async function* flattenTokens<T>(
   node: Node<T>,

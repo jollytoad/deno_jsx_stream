@@ -1,5 +1,8 @@
 import type { AsyncTransformer } from "../types.ts";
 
+/**
+ * Encode string tokens into byte arrays.
+ */
 export function asEncoded<T>(): AsyncTransformer<T, Uint8Array> {
   const encoder = new TextEncoder();
   return async function* (tokens) {

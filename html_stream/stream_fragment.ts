@@ -8,7 +8,7 @@ import { escape, isSafe } from "./token.ts";
 import type { HtmlNode } from "./types.ts";
 
 /**
- * Stream an unknown value as an `Iterable` of {@link HtmlNode}.
+ * Stream an unknown value as a iterable of {@link HtmlNode}'s.
  *
  * Ignoring empty values, escaping primitives, passing already
  * safe values, and handling promises/iterables/async-iterables

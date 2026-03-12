@@ -2,6 +2,11 @@ import type { AsyncTransformer } from "../types.ts";
 
 export type TokenLogger = (token: unknown) => void;
 
+/**
+ * Log each token to the console, passing token thru unchanged
+ *
+ * @param logger an alternative logging function
+ */
 export function logTokens<T>(
   logger: TokenLogger = defaultLogger,
 ): AsyncTransformer<T> {
@@ -13,6 +18,9 @@ export function logTokens<T>(
   };
 }
 
+/**
+ * The default logging function for {@link logTokens}
+ */
 export function defaultLogger(token: unknown): void {
   console.debug(token);
 }

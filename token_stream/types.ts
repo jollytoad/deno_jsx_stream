@@ -2,18 +2,22 @@
  * A node of the structure token stream
  */
 export type Node<T> = SyncNode<T> | AsyncNode<T>;
+
 /**
  * A synchronous node
  */
 export type SyncNode<T> = null | T | Iterable<Node<T>>;
+
 /**
  * An asynchronous node
  */
 export type AsyncNode<T> = PromiseLike<Node<T>> | AsyncIterable<Node<T>>;
+
 /**
  * A node that can be awaited
  */
 export type AwaitedNode<T> = SyncNode<T> | AsyncIterable<Node<T>>;
+
 /**
  * A single iteration from an async iterable of nodes, consisting
  * of an awaitable node item, and the iterator from which to get
@@ -23,17 +27,22 @@ export type NodeIteration<T> = IteratorResult<AwaitedNode<T>> & {
   iterator: AsyncIterator<Node<T>>;
 };
 
+/**
+ * Any value that can be `await`ed.
+ */
 export type Awaitable<T> = T | PromiseLike<T>;
 
 /**
  * An identifier to link a deferred substitution back to its placeholder
  */
 export type PlaceholderId = string;
+
 /**
  * A function to render a placeholder for a deferred node, the given
  * id will be later used by the substitution to find this placeholder
  */
 export type PlaceholderRenderer<T> = (id: PlaceholderId) => T;
+
 /**
  * A function to render the eventual substitution for a deferred node.
  * It's expected that some external mechanism will pick this out of the
@@ -95,10 +104,16 @@ export interface DeferralHandler<T> extends AsyncIterable<T> {
   defer(deferred: AsyncIterable<T>): T;
 }
 
+/**
+ * A token stream transformer function
+ */
 export type AsyncTransformer<I, O = I> = (
   tokens: AsyncIterable<I>,
 ) => AsyncIterable<O>;
 
+/**
+ * Option for the various `render*` functions
+ */
 export interface RenderOptions<T> {
   /**
    * Optional handling of slow nodes

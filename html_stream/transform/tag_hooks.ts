@@ -20,7 +20,8 @@ const ADVICE_NAMES: TagAdviceName[] = [
 ];
 
 /**
- * A transformer that allows 'advice' functions to be called before/after tag tokens.
+ * A transformer that allows 'advice' functions to be called before/after
+ * tag tokens.
  */
 export function tagHooks(
   ...hooks: TagHook[]

@@ -3,9 +3,11 @@ import type { HtmlNode } from "./types.ts";
 const cache = new WeakMap<Response, HtmlNode>();
 
 /**
- * Cache the original HtmlNode against the Response in which it will be delivered.
- * This can be used to avoid having to parse the Response of Request handler when
- * called internally.
+ * Cache the original HtmlNode against the Response in which it will be
+ * delivered.
+ *
+ * This can be used to avoid having to parse the Response of a Request
+ * handler when called internally.
  *
  * @param response the Response that serializes the HtmlNode
  * @param node the original HtmlNode represented by the Response

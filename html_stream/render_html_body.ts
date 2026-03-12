@@ -7,8 +7,8 @@ import type { HtmlNode, HtmlToken } from "./types.ts";
 import type { RenderOptions } from "@http/token-stream/types";
 
 /**
- * Render the given node as a HTML {@linkcode Response} body with a prepended DOCTYPE,
- * and safety checking tokens are valid and not raw string.
+ * Render the given node as a HTML {@linkcode Response} body with a prepended
+ * DOCTYPE, and safety checking tokens are valid and not raw string.
  *
  * @param node the node
  * @param options rendering options

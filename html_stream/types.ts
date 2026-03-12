@@ -10,6 +10,9 @@ export type Attrs = Record<AttrName, AttrValue>;
 
 export type TagKind = "open" | "void" | "close";
 
+/**
+ * A token that represents a tag.
+ */
 export type Tag = {
   kind: TagKind;
   tagName: TagName;

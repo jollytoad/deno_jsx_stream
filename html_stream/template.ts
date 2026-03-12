@@ -3,7 +3,8 @@ import { safe } from "./token.ts";
 import { streamFragment } from "./stream_fragment.ts";
 
 /**
- * Tagged template literal for html, returning an Iterable of {@link HtmlNode}'s.
+ * Tagged template literal for html, returning a iterable of
+ * {@link HtmlNode}'s.
  */
 export function* html(
   strings: TemplateStringsArray,

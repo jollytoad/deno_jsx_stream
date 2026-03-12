@@ -1,3 +1,21 @@
+/**
+ * Creates a ReadableStream from an iterable or async iterable.
+ *
+ * A polyfill for `ReadableStream.from`, which isn't yet widely available in
+ * many runtimes.
+ *
+ * @example
+ * ```ts
+ * import { readableStreamFromIterable } from "@http/token-stream/readable-stream-from-iterable";
+ *
+ * // From sync iterable
+ * const stream1 = readableStreamFromIterable([1, 2, 3]);
+ *
+ * // From async iterable
+ * async function* gen() { yield "a"; yield "b"; }
+ * const stream2 = readableStreamFromIterable(gen());
+ * ```
+ */
 export function readableStreamFromIterable<T>(
   iterable: Iterable<T> | AsyncIterable<T>,
 ): ReadableStream<T> {

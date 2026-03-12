@@ -1,5 +1,10 @@
 import type { AsyncTransformer } from "../types.ts";
 
+/**
+ * Delay before emitting each token.
+ *
+ * @param streamDelay the delay in milliseconds
+ */
 export function slowStream<T>(streamDelay: number): AsyncTransformer<T> {
   return async function* (tokens) {
     for await (const token of tokens) {
